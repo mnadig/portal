@@ -4,9 +4,9 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 
+import rootcause.views
 from rootcause.forms import ContactForm1, ContactForm2
 from rootcause.views import ContactWizard
-
 from mezzanine.core.views import direct_to_template
 
 
@@ -24,7 +24,10 @@ urlpatterns = i18n_patterns("",
 
 urlpatterns += patterns('',
 
-    (r'^tracks/$', 'rootcause.views.list'),
+    (r'^tracks/$', rootcause.views.ListTrackView.as_view()),
+    (r'^tracks/update/(?P<pk>\d+)/$', rootcause.views.UpdateTrackView.as_view()),
+    (r'^tracks/create$', rootcause.views.CreateTrackView.as_view()),
+
     (r'^contact/$', ContactWizard.as_view([ContactForm1, ContactForm2])),
     (r'^lists/submitted_applications_list/$', 'rootcause.views.submitted_applications_list'),
 #    (r'^lists/applications_entry_list/$', 'rootcause.views.applications_entry_list'),

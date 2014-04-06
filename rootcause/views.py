@@ -4,26 +4,31 @@
 #from __future__ import unicode_literals
 from django.shortcuts import render
 from django.shortcuts import render_to_response
-from rootcause.models import Track
-from mezzanine.forms.models import FormEntry, FieldEntry
-
-from django.shortcuts import render_to_response
+from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-
-
+from mezzanine.forms.models import FormEntry, FieldEntry
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
 from mezzanine.utils.views import render, paginate
 from mezzanine.utils.models import get_user_model
-from django.http import HttpResponse
+from rootcause.models import Track
 
-def list(request):
-    track_list = Track.objects.all()
-    return render_to_response(
-        'tracks/list.html',
-        {'track_list': track_list}
-    )
+class ListTrackView(ListView):
+    model = Track
+    template_name = 'track/list.html'
+
+class CreateTrackView(CreateView):
+    model = Track
+    template_name = "track/update.html"
+
+    def get_success_url(self):
+        return "/tracks"
+
+class UpdateTrackView(UpdateView):
+    model = Track
+    template_name = "track/update.html"
+
 
 # multi-form
 class ContactWizard(SessionWizardView):
@@ -32,16 +37,15 @@ class ContactWizard(SessionWizardView):
             'form_data': [form.cleaned_data for form in form_list],
         })
 
-    def get_form_step_data(self, form):
-        print 'pradeep1'
-        print form.data
-        print 'pradeep2'
-        return form.data
-#User = get_user_model()
+def get_form_step_data(self, form):
+    print 'pradeep1'
+    print form.data
+    print 'pradeep2'
+    return form.data
 
 def submitted_applications_list(request):
-    list = FormEntry.objects.all()
-    return render_to_response('lists/submitted_applications_list.html', {'submitted_applications_list': list})
+    _list = FormEntry.objects.all()
+    return render_to_response('lists/submitted_applications_list.html', {'submitted_applications_list': _list})
 
 def applications_entry_list(request, formId):
     try:
