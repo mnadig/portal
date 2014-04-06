@@ -9,6 +9,8 @@ from mezzanine.forms.models import FormEntry, FieldEntry
 
 from django.shortcuts import render_to_response
 from django.contrib.formtools.wizard.views import SessionWizardView
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+
 
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
@@ -38,15 +40,16 @@ class ContactWizard(SessionWizardView):
 #User = get_user_model()
 
 def submitted_applications_list(request):
-#    list = []
-#    list.append(template)
     list = FormEntry.objects.all()
     return render_to_response('lists/submitted_applications_list.html', {'submitted_applications_list': list})
 
-def applications_entry_list(request):
-#def submitted_applications_list(request):
-#    list = []
-#    list.append(template)
-#    entry = FormEntry.objects.get(id=entryId)
-    list = FieldEntry.objects.all()
-    return render_to_response('lists/applications_entry_list.html', {'applications_entry_list': list})
+def applications_entry_list(request, formId):
+    try:
+        _form = FormEntry.objects.get(id=formId)
+    except ObjectDoesNotExist:
+        error_message = 'Application Id ' + str(formId) + ' does not exist!'
+        return render_to_response('lists/applications_entry_list.html', {'error_message': error_message})
+
+    _list = FieldEntry.objects.filter(entry=_form)
+    return render_to_response('lists/applications_entry_list.html', {'applications_entry_list': _list, 'application': _form})
+

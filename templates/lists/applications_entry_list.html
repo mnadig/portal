@@ -1,12 +1,22 @@
-<h1>This is the submitted_applications_list!</h1>
-{% if applications_entry_list %}
-        <ul>
-            {% for entry in applications_entry_list %}
-                <li>Form Id: {{entry.entry.id}}</li>
-                <li>Entry Id: {{entry.field_id}}</li>
-                <li>Entry Value: {{entry.value}}</li>
-            {% endfor %}
-        </ul>
+{% if error_message %}
+    <h3>{{ error_message }}</h3>
 {% else %}
-        <p>There are no Entries :(</p>
+
+{% if application %}
+    <h3>{{ application.form }}</h3>
+{% else %}
+    <h3>No Application Filed!</h3>
+{% endif %}
+
+{% if applications_entry_list %}
+    {% for entry in applications_entry_list %}
+        <ul>
+            <li>Entry Id: {{entry.field_id}}</li>
+            <li>Entry Value: {{entry.value}}</li>
+        </ul>
+    {% endfor %}
+{% else %}
+    <h3>Application form has no entry!</h3>
+{% endif %}
+
 {% endif %}

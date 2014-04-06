@@ -27,7 +27,9 @@ urlpatterns += patterns('',
     (r'^tracks/$', 'rootcause.views.list'),
     (r'^contact/$', ContactWizard.as_view([ContactForm1, ContactForm2])),
     (r'^lists/submitted_applications_list/$', 'rootcause.views.submitted_applications_list'),
-    (r'^lists/applications_entry_list/$', 'rootcause.views.applications_entry_list'),
+#    (r'^lists/applications_entry_list/$', 'rootcause.views.applications_entry_list'),
+    (r'^lists/applications_entry_list/(?P<formId>[0-9]+)/$', 'rootcause.views.applications_entry_list'),
+
 
 
     # We don't want to presume how your homepage works, so here are a
