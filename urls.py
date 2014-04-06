@@ -26,6 +26,8 @@ urlpatterns += patterns('',
 
     (r'^tracks/$', 'rootcause.views.list'),
     (r'^contact/$', ContactWizard.as_view([ContactForm1, ContactForm2])),
+    (r'^lists/submitted_applications_list/$', 'rootcause.views.submitted_applications_list'),
+    (r'^lists/applications_entry_list/$', 'rootcause.views.applications_entry_list'),
 
 
     # We don't want to presume how your homepage works, so here are a
@@ -77,6 +79,7 @@ urlpatterns += patterns('',
     # from it, and use them directly below instead of using
     # ``mezzanine.urls``.
     ("^", include("mezzanine.urls")),
+    #("^$", include("rootcause.urls")),
 
     # MOUNTING MEZZANINE UNDER A PREFIX
     # ---------------------------------

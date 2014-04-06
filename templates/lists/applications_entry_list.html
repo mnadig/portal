@@ -1,0 +1,12 @@
+<h1>This is the submitted_applications_list!</h1>
+{% if applications_entry_list %}
+        <ul>
+            {% for entry in applications_entry_list %}
+                <li>Form Id: {{entry.entry.id}}</li>
+                <li>Entry Id: {{entry.field_id}}</li>
+                <li>Entry Value: {{entry.value}}</li>
+            {% endfor %}
+        </ul>
+{% else %}
+        <p>There are no Entries :(</p>
+{% endif %}
