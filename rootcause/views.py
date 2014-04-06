@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response
 from django.views.generic import ListView, CreateView, UpdateView
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from mezzanine.forms.models import FormEntry, FieldEntry
+from mezzanine.forms.models import FormEntry, FieldEntry, Form, Field
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
 from mezzanine.utils.views import render, paginate
@@ -48,12 +48,14 @@ def submitted_applications_list(request):
     return render_to_response('lists/submitted_applications_list.html', {'submitted_applications_list': _list})
 
 def applications_entry_list(request, formId):
+    error_message = 'Application Id ' + str(formId) + ' does not exist!'
     try:
-        _form = FormEntry.objects.get(id=formId)
+        _formEntry = FormEntry.objects.get(id=formId)
+        _form = _formEntry.form
+        _fields = Field.objects.filter(form=_form)
+        _list = FieldEntry.objects.filter(entry=_formEntry)
+        return render_to_response('lists/applications_entry_list.html', {'applications_entry_list': _list, 'application': _formEntry, 'fields': _fields})
     except ObjectDoesNotExist:
-        error_message = 'Application Id ' + str(formId) + ' does not exist!'
         return render_to_response('lists/applications_entry_list.html', {'error_message': error_message})
 
-    _list = FieldEntry.objects.filter(entry=_form)
-    return render_to_response('lists/applications_entry_list.html', {'applications_entry_list': _list, 'application': _form})
 

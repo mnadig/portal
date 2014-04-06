@@ -19,4 +19,12 @@
     <h3>Application form has no entry!</h3>
 {% endif %}
 
+{% if fields %}
+    {% for x in fields %}
+        <ul>
+            <li>field label: {{x.label}}</li>
+        </ul>
+    {% endfor %}
+{% endif %}
+
 {% endif %}
