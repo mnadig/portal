@@ -4,6 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 
+import rootcause.views
 from mezzanine.core.views import direct_to_template
 
 
@@ -21,8 +22,9 @@ urlpatterns = i18n_patterns("",
 
 urlpatterns += patterns('',
 
-    (r'^tracks/$', 'rootcause.views.list'),
-
+    (r'^tracks/$', rootcause.views.ListTrackView.as_view()),
+    (r'^tracks/update/(?P<pk>\d+)/$', rootcause.views.UpdateTrackView.as_view()),
+    (r'^tracks/create$', rootcause.views.CreateTrackView.as_view()),
 
     # We don't want to presume how your homepage works, so here are a
     # few patterns you can use to set it up.

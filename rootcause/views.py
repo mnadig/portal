@@ -1,12 +1,22 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response
+from django.views.generic import ListView, CreateView, UpdateView
 from rootcause.models import Track
-from django.template import Context, loader
 
 
-def list(request):
-    track_list = Track.objects.all()
-    return render_to_response(
-        'tracks/list.html',
-        {'track_list': track_list}
-    )
+class ListTrackView(ListView):
+    model = Track
+    template_name = 'track/list.html'
+
+class CreateTrackView(CreateView):
+    model = Track
+    template_name = "track/update.html"
+
+    def get_success_url(self):
+        return "/tracks"
+
+class UpdateTrackView(UpdateView):
+    model = Track
+    template_name = "track/update.html"
+
+
