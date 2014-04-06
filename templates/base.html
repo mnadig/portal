@@ -63,9 +63,7 @@
     {% search_form "all" %}
     {% page_menu "pages/menus/dropdown.html" %}
   -->
-    {% nevercache %}
-    {% include "includes/user_panel.html" %}
-    {% endnevercache %}
+    
 </div>
 </div>
 </div>
@@ -109,7 +107,9 @@
 </div>
 
 <div class="col-md-3 right">
-    
+    {% nevercache %}
+    {% include "includes/user_panel.html" %}
+    {% endnevercache %}
 </div>
 
 </div>
