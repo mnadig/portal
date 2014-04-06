@@ -4,6 +4,9 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 
+from rootcause.forms import ContactForm1, ContactForm2
+from rootcause.views import ContactWizard
+
 from mezzanine.core.views import direct_to_template
 
 
@@ -22,6 +25,7 @@ urlpatterns = i18n_patterns("",
 urlpatterns += patterns('',
 
     (r'^tracks/$', 'rootcause.views.list'),
+    (r'^contact/$', ContactWizard.as_view([ContactForm1, ContactForm2])),
 
 
     # We don't want to presume how your homepage works, so here are a
