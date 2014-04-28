@@ -14,6 +14,7 @@ from forms_builder.forms import settings
 from forms_builder.forms.utils import now, slugify, unique_slug
 
 
+
 STATUS_DRAFT = 1
 STATUS_PUBLISHED = 2
 STATUS_CHOICES = (
@@ -211,8 +212,8 @@ class AbstractFormEntry(models.Model):
     """
     An entry submitted via a user-built form.
     """
-
     entry_time = models.DateTimeField(_("Date/time"))
+
 
     class Meta:
         verbose_name = _("Form entry")

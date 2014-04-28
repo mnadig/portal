@@ -6,7 +6,7 @@ import os
 
 from settings import PROJECT_ROOT, PROJECT_DIRNAME
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../../../'))
 os.chdir(PROJECT_ROOT)
 sys.path.insert(0, os.path.abspath(os.path.join(PROJECT_ROOT, "..")))
 
