@@ -1,1 +1,0 @@
-django-forms-builder==0.10
