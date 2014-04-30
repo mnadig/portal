@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from
 import forms_builder.forms.urls
 
 from django.contrib import admin

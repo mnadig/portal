@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import Q
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext, ugettext_lazy as _
+from django.contrib.auth.models import User
 
 from forms_builder.forms import fields
 from forms_builder.forms import settings
@@ -212,6 +213,8 @@ class AbstractFormEntry(models.Model):
     """
     An entry submitted via a user-built form.
     """
+    # user = models.ForeignKey(User, widget=forms.HiddenInput())
+    user = models.ForeignKey(User)
     entry_time = models.DateTimeField(_("Date/time"))
 
 
