@@ -38,9 +38,18 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.humanize',
     'forms_builder.forms',
-    'snapp'
+    'snapp',
+    'registration'
 )
+
+# for registration app
+ACCOUNT_ACTIVATION_DAYS=7
+EMAIL_HOST='localhost'
+EMAIL_PORT=1025
+# EMAIL_HOST_USER='username'
+# EMAIL_HOST_PASSWORD='password'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # other context processors
