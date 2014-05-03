@@ -1,1 +1,11 @@
-<h1>GO AWAY {{ x }}</h1>
+<h1>Hello, {{ username }}</h1>
+
+{% if forms %}
+    <ul>
+        {% for form in forms %}
+            <li><a href="{{ form.get_absolute_url }}">{{ form.title }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <strong>There are no forms present.</strong>
+{% endif %}
