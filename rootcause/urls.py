@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'^forms/', include(forms_builder.forms.urls)),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^$', 'snapp.views.index', name='index'), # todo: change to include all from snapp
-
+    url(r'^evaluation_dashboard/', 'snapp.views.evaluation_dashboard', name='evaluation_dashboard'),
+    url(r'^evaluations/form/([0-9]+)', 'snapp.views.evaluation_form', name='evaluation_form')
 )
