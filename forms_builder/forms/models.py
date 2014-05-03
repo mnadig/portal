@@ -248,6 +248,9 @@ class AbstractFieldEntry(models.Model):
 class FormEntry(AbstractFormEntry):
     form = models.ForeignKey("Form", related_name="entries")
 
+    def label_for_field(self, field_entry):
+        return Field.objects.get(pk=field_entry.field_id).label
+
 
 class FieldEntry(AbstractFieldEntry):
     entry = models.ForeignKey("FormEntry", related_name="fields")

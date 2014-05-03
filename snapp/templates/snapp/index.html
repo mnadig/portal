@@ -1,11 +1,51 @@
-<h1>Hello, {{ username }}</h1>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Root Cause</title>
+</head>
+<body>
+<h1>Hello, {{ user.username }}</h1>
 
-{% if forms %}
-    <ul>
-        {% for form in forms %}
-            <li><a href="{{ form.get_absolute_url }}">{{ form.title }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <strong>There are no forms present.</strong>
-{% endif %}
+<ul>
+    <li><a href="#">Welcome!</a></li>
+    <li>
+        Apply
+        <ul>
+            {% if form_entry %}
+                <li><a href="/submitted_form_entries/{{ form_entry.id }}">View submitted application</a></li>
+                <li>Continue my application</li>
+            {% else %}
+                {% if forms %}
+                    {% for form in forms %}
+                        <li><a href="{{ form.get_absolute_url }}">{{ form.title }}</a></li>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </ul>
+    </li>
+    <li>Evaluate
+        <ul>
+            <li>Track 1</li>
+            <li>Track 2</li>
+            <li>Track 3</li>
+        </ul>
+    </li>
+    {% if user.is_authenticated %}
+        <li><a href="/accounts/logout">Logout</a></li>
+    {% else %}
+        <li>Login
+            <ul>
+                <li><a href="/accounts/login">I have an account!</a></li>
+                <li><a href="/accounts/register">Create new account</a></li>
+            </ul>
+        </li>
+    {% endif %}
+    {% if user.is_superuser %}
+        <li><a href="/admin">Admin</a>
+    {% endif %}
+    </li>
+</ul>
+
+</body>
+</html>

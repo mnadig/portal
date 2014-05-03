@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Root Cause::Submitted Applications</title>
+</head>
+<body>
+<table>
+    <thead>
+       <tr>
+       <th>Question</th>
+       <th>Answer</th>
+       </tr>
+    </thead>
+    <tbody>
+{%  for row in rows %}
+    <tr>
+        <td>{{ row.label }}</td>
+        <td>{{ row.value }}</td>
+    </tr>
+
+{% endfor %}
+    </tbody>
+    </table>
+
+</body>
+</html>

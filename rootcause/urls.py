@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 import forms_builder.forms.urls
 
 from django.contrib import admin
+from snapp.views import index
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -14,5 +15,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^$', 'snapp.views.index', name='index'), # todo: change to include all from snapp
     url(r'^evaluation_dashboard/', 'snapp.views.evaluation_dashboard', name='evaluation_dashboard'),
-    url(r'^evaluations/form/([0-9]+)', 'snapp.views.evaluation_form', name='evaluation_form')
+    url(r'^evaluations/form/([0-9]+)', 'snapp.views.evaluation_form', name='evaluation_form'),
+    url(r'^submitted_form_entries/([0-9]+)', 'snapp.views.submitted_form_entry', name='submitted_form_entry'),
+    url(r'^index/', index, name="index"),
 )
