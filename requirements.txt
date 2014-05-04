@@ -9,3 +9,4 @@ python-gnupg==0.3.6
 sphinx-me==0.2.1
 wsgiref==0.1.2
 xlwt==0.7.5
+django-bootstrap3==4.4.0

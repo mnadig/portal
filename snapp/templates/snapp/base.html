@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load bootstrap3 %}
+
+<html>
+
+<head lang="en">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <title>Root Cause</title>
+</head>
+<body>
+<h1>Hello, {{ user.username }}</h1>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Welcome!</a></li>
+                <li class="dropdown">
+                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Apply<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        {% if form_entry.submitted %}
+                            <li><a href="/submitted_form_entries/{{ form_entry.id }}">View submitted application</a>
+                            </li>
+                        {% elif not form_entry.submitted %}
+                            <li>Continue my application</li>
+                        {% else %}
+                            {% if forms %}
+                                {% for form in forms %}
+                                    <li><a href="{{ form.get_absolute_url }}">{{ form.title }}</a></li>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Evaluate<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>Track 1</li>
+                        <li>Track 2</li>
+                        <li>Track 3</li>
+                    </ul>
+                </li>
+                {% if user.is_authenticated %}
+                    <li><a href="/accounts/logout">Logout</a></li>
+                {% else %}
+                    <li class="dropdown">Login
+                        <ul class="dropdown-menu">
+                            <li><a href="/accounts/login">I have an account!</a></li>
+                            <li><a href="/accounts/register">Create new account</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <li><a href="/admin">Admin</a>
+                {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</div>
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

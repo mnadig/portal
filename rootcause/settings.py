@@ -41,7 +41,8 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'forms_builder.forms',
     'snapp',
-    'registration'
+    'registration',
+    'bootstrap3'
 )
 
 # for registration app
