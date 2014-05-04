@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load bootstrap3 %}
-
+{% load staticfiles %}
 <html>
 
 <head lang="en">
@@ -10,10 +10,20 @@
     <meta charset="UTF-8">
     <br><br><br>
     <title>Root Cause</title>
+    <script type="text/javascript">
+        function showAlertTemporarily() {
+            $(".alert").text("Draft saved.");
+            $(".alert").show();
+            setTimeout(function () {
+                $(".alert").fadeOut();
+            }, 2000);
+        }
+    </script>
+
+    {% block head %}{% endblock %}
 </head>
 <body>
-<h1>WELCOME TO Root Cause, YO!</h1>
-
+<img src="{% static "snapp/images/rootcauselogo.png" %}" alt="rootcauselogo">
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid bg-warning">
         <div class="collapse navbar-collapse">
@@ -72,6 +82,7 @@
         </div>
     </div>
 </nav>
+
 </div>
 <div id="content">
     {% block content %}{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "snapp/base.html" %}
 
 {% block content %}
-    <h3>Welcome to the social innovation forum's online portal!</h3>
+    <h2>Welcome to the social innovation forum's online portal!</h2>
     {% if user.is_authenticated %}
         <h2>Hello, {{ user.username }}</h2>
     {% else %}
