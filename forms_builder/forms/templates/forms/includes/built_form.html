@@ -2,10 +2,46 @@
     {% if form.intro %}
     <p>{{ form.intro }}</p>
     {% endif %}
-    <form action="{{ form.get_absolute_url }}" method="post"
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        function saveDraft() {
+            var formData = $('#awesome > p > :input').serializeArray();
+            localStorage['draft'] = JSON.stringify(formData);
+        }
+
+        // todo: any sensitive data?
+        // todo: get rid of button, update on field focus loss, alert user draft has been saved
+
+        $(document).ready(function() {
+
+            var bindToDraftSubmit = function () {
+                $('#draft').bind("click", saveDraft);
+            };
+
+            var populateWithLocalData = function () {
+                var draftData = JSON.parse(localStorage.getItem('draft'));
+
+                $('#awesome > p > :input').each(function (inputIdx, inputField) {
+                    $(draftData).each(function (draftDataIdx, draftDataField) {
+                        for (idx in draftData) {
+                            if (inputField.name === draftDataField.name) {
+                                inputField.value = draftDataField.value;
+                            }
+                        }
+                    });
+                })
+            };
+
+            bindToDraftSubmit();
+            populateWithLocalData();
+        });
+    </script>
+    <form id="awesome" action="{{ form.get_absolute_url }}" method="post"
         {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
         {% csrf_token %}
         {{ form_for_form.as_p }}
         <div style="clear:left;">&nbsp;</div>
+
+        <input type="submit" id="draft" value="save as draft" >
         <input type="submit" value="{{ form.button_text }}">
     </form>
