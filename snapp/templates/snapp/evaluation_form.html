@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-{{ form_entry.id }}
-<ul>
-    {% for field_entry in form_entry.fields.all %}
-        <li>{{ field_entry.value }}</li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% extends "snapp/base.html" %}
+
+{% block content %}
+    <ul>
+        {% for field_entry in form_entry.fields.all %}
+            <li>{{ field_entry.value }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
