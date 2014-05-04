@@ -1,47 +1,54 @@
-    <h1>{{ form.title }}</h1>
-    {% if form.intro %}
+<h1>{{ form.title }}</h1>
+{% if form.intro %}
     <p>{{ form.intro }}</p>
-    {% endif %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script type="text/javascript">
-        function saveDraft() {
-            var formData = $('#awesome > p > :input').serializeArray();
-            localStorage['draft'] = JSON.stringify(formData);
-        }
+{% endif %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript">
+    function saveDraft() {
+        var formData = $('#awesome > p > :input').serializeArray();
+        localStorage['draft'] = JSON.stringify(formData);
+    }
 
-        // todo: any sensitive data?
-        // todo: get rid of button, update on field focus loss, alert user draft has been saved
+    var bindToDraftSubmit = function () {
+        $('#draft').bind("click", saveDraft);
+    };
 
-        $(document).ready(function() {
+    var populateWithLocalData = function () {
+        console.log("I CALLED")
+        var draftData = JSON.parse(localStorage.getItem('draft'));
 
-            var bindToDraftSubmit = function () {
-                $('#draft').bind("click", saveDraft);
-            };
-
-            var populateWithLocalData = function () {
-                var draftData = JSON.parse(localStorage.getItem('draft'));
-
-                $('#awesome > p > :input').each(function (inputIdx, inputField) {
-                    $(draftData).each(function (draftDataIdx, draftDataField) {
-                        for (idx in draftData) {
-                            if (inputField.name === draftDataField.name) {
-                                inputField.value = draftDataField.value;
-                            }
+        $('#awesome > p > :input').each(function (inputIdx, inputField) {
+            $(draftData).each(function (draftDataIdx, draftDataField) {
+                for (idx in draftData) {
+                    if (inputField.name === draftDataField.name) {
+                        if (inputField.type === "checkbox") {
+                            $(inputField).prop('checked', true);
                         }
-                    });
-                })
-            };
+                        inputField.value = draftDataField.value;
+                    }
+                }
+            });
+        })
+    };
 
-            bindToDraftSubmit();
-            populateWithLocalData();
-        });
-    </script>
-    <form id="awesome" action="{{ form.get_absolute_url }}" method="post"
-        {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-        {% csrf_token %}
-        {{ form_for_form.as_p }}
-        <div style="clear:left;">&nbsp;</div>
+    // todo: any sensitive data?
+    // todo: notify user of update
 
-        <input type="submit" id="draft" value="save as draft" >
-        <input type="submit" value="{{ form.button_text }}">
-    </form>
+    $(document).ready(function() {
+
+        $('#awesome > p > :input').focusout(function() {
+            console.log("HELLO THERE")
+            saveDraft();
+        })
+
+        bindToDraftSubmit();
+        populateWithLocalData();
+    });
+</script>
+<form id="awesome" action="{{ form.get_absolute_url }}" method="post"
+      {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+    {% csrf_token %}
+    {{ form_for_form.as_p }}
+    <div style="clear:left;">&nbsp;</div>
+    <input type="submit" value="{{ form.button_text }}">
+</form>
