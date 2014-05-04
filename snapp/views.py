@@ -15,7 +15,7 @@ def index(request):
     context = {'user': request.user, 'forms': forms}
     if request.user.is_authenticated():
         form_entries = FormEntry.objects.filter(user=request.user)
-        if len(form_entries) > 0:
+        if form_entries:
             context['form_entry'] = form_entries[0]
 
     return render(request, 'snapp/index.html', context)
@@ -35,10 +35,7 @@ def submitted_form_entry(request, form_entry_id):
 @login_required
 def evaluation_dashboard(request):
     form_entries = FormEntry.objects.all()
-
-    username = request.user.username
     context = {'user': request.user, 'form_entries': form_entries}
-
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
 
