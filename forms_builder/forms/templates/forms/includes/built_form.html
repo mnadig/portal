@@ -1,20 +1,34 @@
+{% load bootstrap3 %}
+
 <h1>{{ form.title }}</h1>
 {% if form.intro %}
     <p>{{ form.intro }}</p>
 {% endif %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 <script type="text/javascript">
+
+    function showAlertTemporarily() {
+        $(".alert").text("Draft save locally.");
+        $(".alert").show();
+        setTimeout(function() {
+            $(".alert").fadeOut();
+        }, 2000);
+    }
+
     function saveDraft() {
         var formData = $('#awesome > p > :input').serializeArray();
         localStorage['draft'] = JSON.stringify(formData);
+        showAlertTemporarily();
     }
 
     var bindToDraftSubmit = function () {
         $('#draft').bind("click", saveDraft);
+{#        $(".alert").text("Draft save locally.");#}
     };
 
     var populateWithLocalData = function () {
-        console.log("I CALLED")
         var draftData = JSON.parse(localStorage.getItem('draft'));
 
         $('#awesome > p > :input').each(function (inputIdx, inputField) {
@@ -28,23 +42,26 @@
                     }
                 }
             });
-        })
+        });
     };
 
     // todo: any sensitive data?
-    // todo: notify user of update
+    // todo: dont notify if save failed due to invalid data
 
     $(document).ready(function() {
 
         $('#awesome > p > :input').focusout(function() {
-            console.log("HELLO THERE")
             saveDraft();
         })
 
         bindToDraftSubmit();
         populateWithLocalData();
+
+        $(".alert").hide();
+        $(".alert").alert();
     });
 </script>
+<div class="alert alert-warning fade in"></div>
 <form id="awesome" action="{{ form.get_absolute_url }}" method="post"
       {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
     {% csrf_token %}
