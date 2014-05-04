@@ -22,9 +22,10 @@
                             <th>Submitted By</th>
                             <th>Date Submitted</th>
                             </thead>
+                            <tbody>
                             {% if form_entries %}
                                 {% for form_entry in form_entries %}
-                                    <tbody>
+
                                     <tr>
                                         <td>{{ form_entry.form.title }}</td>
                                         <td></td>
@@ -34,9 +35,10 @@
                                             <button type="button" class="btn btn-primary">Evaluate!</button>
                                         </td>
                                     </tr>
-                                    </tbody>
+
                                 {% endfor %}
                             {% endif %}
+                            </tbody>
                         </table>
                     </div>
                 </div>
