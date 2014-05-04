@@ -21,11 +21,13 @@
                 <li class="dropdown">
                     <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Apply<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        {% if form_entry.submitted %}
-                            <li><a href="/submitted_form_entries/{{ form_entry.id }}">View submitted application</a>
-                            </li>
-                        {% elif not form_entry.submitted %}
-                            <li>Continue my application</li>
+                        {% if form_entry %}
+                            {% if form_entry.submitted %}
+                                <li><a href="/submitted_form_entries/{{ form_entry.id }}">View submitted application</a>
+                                </li>
+                            {% elif not form_entry.submitted %}
+                                <li>Continue my application</li>
+                            {% endif %}
                         {% else %}
                             {% if forms %}
                                 {% for form in forms %}

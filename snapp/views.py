@@ -12,7 +12,10 @@ from django.contrib.auth.decorators import login_required
 
 def index(request):
     forms = Form.objects.all()
-    form_entry = FormEntry.objects.filter(user=request.user)[0]
+    form_entries = FormEntry.objects.filter(user=request.user)
+    form_entry = None
+    if len(form_entries) > 0:
+        form_entry=form_entries[0]
     context = {'user': request.user, 'forms': forms, 'form_entry': form_entry}
 
     return render(request, 'snapp/index.html', context)
