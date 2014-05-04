@@ -216,7 +216,10 @@ class AbstractFormEntry(models.Model):
     # user = models.ForeignKey(User, widget=forms.HiddenInput())
     user = models.ForeignKey(User)
     entry_time = models.DateTimeField(_("Date/time"))
+    submitted = models.BooleanField(blank=False)
 
+    def label_for_field(self, field_entry):
+        return Field.objects.get(pk=field_entry.field_id).label
 
     class Meta:
         verbose_name = _("Form entry")
@@ -247,10 +250,6 @@ class AbstractFieldEntry(models.Model):
 
 class FormEntry(AbstractFormEntry):
     form = models.ForeignKey("Form", related_name="entries")
-
-    def label_for_field(self, field_entry):
-        return Field.objects.get(pk=field_entry.field_id).label
-
 
 class FieldEntry(AbstractFieldEntry):
     entry = models.ForeignKey("FormEntry", related_name="fields")
