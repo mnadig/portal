@@ -1,5 +1,10 @@
 {% extends "snapp/base.html" %}
 
 {% block content %}
-<h1> WELCOME TO RC, YO!</h1>
+    <h3>Welcome to the social innovation forum's online portal!</h3>
+    {% if user.is_authenticated %}
+        <h2>Hello, {{ user.username }}</h2>
+    {% else %}
+        <div>To get started, please create an account or log in.</div>
+    {% endif %}
 {% endblock %}
