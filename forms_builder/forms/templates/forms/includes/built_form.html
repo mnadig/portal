@@ -5,7 +5,7 @@
 
         function saveDraft() {
             var formData = $('#awesome > p > :input').serializeArray();
-            localStorage['draft'] = JSON.stringify(formData);
+            localStorage[document.URL] = JSON.stringify(formData);
             showAlertTemporarily();
         }
 
@@ -15,7 +15,7 @@
         };
 
         var populateWithLocalData = function () {
-            var draftData = JSON.parse(localStorage.getItem('draft'));
+            var draftData = JSON.parse(localStorage.getItem(document.URL));
 
             $('#awesome > p > :input').each(function (inputIdx, inputField) {
                 $(draftData).each(function (draftDataIdx, draftDataField) {

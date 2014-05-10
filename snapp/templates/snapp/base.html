@@ -22,6 +22,30 @@
 
     {% block head %}{% endblock %}
 </head>
+
+<script>
+
+$(document).ready(function () {
+    if (localStorage && localStorage.key(0)) {
+        //there should really be just one entry in localStorage which will be our draft application
+        //key is an absolute path to the draft application
+        var pathToDraftApplication = localStorage.key(0);
+
+        var linktToDraftApplication = document.createElement('a');
+        var linkTextToDraftApplication = document.createTextNode("Continue Editing application");
+        linktToDraftApplication.appendChild(linkTextToDraftApplication);
+        linktToDraftApplication.href = pathToDraftApplication;
+        var childElementToDraft = document.createElement('li');
+        childElementToDraft.appendChild(linktToDraftApplication)
+
+        //remove all links from the Apply dropdown and add the new Continue link
+        $("#apply ul").html("").append(childElementToDraft);
+    }
+});
+
+
+
+</script>
 <body>
 <img src="{% static "snapp/images/rootcauselogo.png" %}" alt="rootcauselogo">
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -30,7 +54,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Welcome!</a></li>
                 {% if user.is_authenticated %}
-                    <li class="dropdown">
+                    <li class="dropdown" id="apply">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Apply<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
                             {% if form_entry %}
@@ -38,8 +62,6 @@
                                     <li role="presentation">
                                         <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>
                                     </li>
-                                {% elif not form_entry.submitted %}
-                                    <li role="menuitem" tabindex="-1" >Continue my application</li>
                                 {% endif %}
                             {% else %}
                                 {% if forms %}
