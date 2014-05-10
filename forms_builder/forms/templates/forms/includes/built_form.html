@@ -9,11 +9,6 @@
             showAlertTemporarily();
         }
 
-        var bindToDraftSubmit = function () {
-            $('#draft').bind("click", saveDraft);
-            {#        $(".alert").text("Draft save locally.");#}
-        };
-
         var populateWithLocalData = function () {
             var draftData = JSON.parse(localStorage.getItem(document.URL));
 
@@ -40,7 +35,6 @@
                 saveDraft();
             })
 
-            bindToDraftSubmit();
             populateWithLocalData();
 
             $(".alert").hide();
