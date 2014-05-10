@@ -1,13 +1,13 @@
 {% extends "snapp/base.html" %}
 
-<script>
-
-$(document).ready(function () {
-    localStorage.clear()
-});
-</script>
-
 {% block content %}
+    <script>
+
+    $(document).ready(function () {
+        var localStoreKey = "Root Cause Form Data: {{ form.id }}";
+        localStorage.removeItem(localStoreKey);
+    });
+    </script>
     <title>{{ form.title }}</title>
     <h1>{{ form.title }}</h1>
     {% if form.response %}
