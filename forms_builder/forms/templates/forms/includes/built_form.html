@@ -5,7 +5,7 @@
 {% block content %}
     <script type="text/javascript">
 
-        var localStoreKey = "Root Cause Form Data: {{ form.id }}";
+        var localStoreKey = document.URL;
         function saveDraft() {
             var formData = $('#awesome > p > :input').serializeArray();
             localStorage[localStoreKey] = JSON.stringify(formData);

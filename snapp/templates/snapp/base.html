@@ -58,11 +58,9 @@ $(document).ready(function () {
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Apply<b class="caret"></b></a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
                             {% if form_entry %}
-                                {% if form_entry.submitted %}
-                                    <li role="presentation">
-                                        <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>
-                                    </li>
-                                {% endif %}
+                                <li role="presentation">
+                                    <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>
+                                </li>
                             {% else %}
                                 {% if forms %}
                                     {% for form in forms %}
