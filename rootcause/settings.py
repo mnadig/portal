@@ -77,6 +77,14 @@ ROOT_URLCONF = 'rootcause.urls'
 WSGI_APPLICATION = 'rootcause.wsgi.application'
 
 
+# FORMS_BUILDER_EXTRA_FIELDS = (
+#     (100, "django.forms.CharField", "Fancy char field"),
+# )
+# FORMS_BUILDER_EXTRA_WIDGETS = (
+#     (100, "rootcause.FancyTextarea"),
+# )
+
+
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 

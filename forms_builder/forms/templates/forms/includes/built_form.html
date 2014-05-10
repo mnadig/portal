@@ -29,6 +29,24 @@
             });
         };
 
+        var groupFieldSets = function () {
+
+            fieldsets = {}
+
+            $('#awesome > p > :input').each(function (inputIdx, inputField) {
+                if (inputField.dataset.fieldset) {
+                    fieldsets[inputField.dataset.fieldset] = fieldsets[inputField.dataset.fieldset] || $("<fieldset><legend>" + inputField.dataset.fieldset + "</legend></fieldset>")
+                    fieldsets[inputField.dataset.fieldset].append($(inputField).parent())
+                }
+            });
+            $.each(fieldsets, function (key, value) {
+                {#                $("#awesome").append(value)#}
+                value.insertBefore($("input[type='submit']"))
+                {#                value.insertBefore($("#awesome :last-child"))#}
+                console.log(key + ": " + value);
+            });
+        };
+        
         // todo: any sensitive data?
         // todo: dont notify if save failed due to invalid data
 
@@ -44,6 +62,8 @@
             $(".alert").alert();
             $("form li").addClass("form-group");
             $("select").addClass("form-control");
+
+            groupFieldSets();
         });
     </script>
     <h1>{{ form.title }}</h1>

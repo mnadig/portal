@@ -160,6 +160,8 @@ class AbstractField(models.Model):
         max_length=settings.FIELD_MAX_LENGTH)
     placeholder_text = models.CharField(_("Placeholder Text"), null=True,
         blank=True, max_length=100, editable=settings.USE_HTML5)
+    fieldset = models.CharField(_("Fieldset"), null=True,
+        blank=True, max_length=100)
     help_text = models.CharField(_("Help text"), blank=True, max_length=settings.HELPTEXT_MAX_LENGTH)
 
     objects = FieldManager()
@@ -216,7 +218,6 @@ class AbstractFormEntry(models.Model):
     # user = models.ForeignKey(User, widget=forms.HiddenInput())
     user = models.ForeignKey(User)
     entry_time = models.DateTimeField(_("Date/time"))
-    submitted = models.BooleanField(blank=False)
 
     def label_for_field(self, field_entry):
         return Field.objects.get(pk=field_entry.field_id).label
