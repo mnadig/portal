@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 <html>
-
+<link rel="stylesheet" href="{% static "snapp/css/snapp.css" %}" type="text/css"/>
 <head lang="en">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     {% bootstrap_css %}
@@ -26,6 +26,7 @@
 <script>
 
 $(document).ready(function () {
+    $(".alert").hide();
     if (localStorage && localStorage.key(0)) {
         //there should really be just one entry in localStorage which will be our draft application
         //key is an absolute path to the draft application
@@ -47,9 +48,11 @@ $(document).ready(function () {
 
 </script>
 <body>
+
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <img src="{% static "snapp/images/rootcauselogo.png" %}" alt="rootcauselogo">
     <div class="container-fluid bg-warning">
+        <div><img src="{% static "snapp/images/rootcauselogo.png" %}" alt="rootcauselogo"></div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Welcome!</a></li>
@@ -105,7 +108,10 @@ $(document).ready(function () {
 </nav>
 
 </div>
-<div id="content">
+
+
+{#<div id="content" style="padding-top: 70px;">#}
+<div id="content" class="content">
     {% block content %}{% endblock %}
 </div>
 </body>
