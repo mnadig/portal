@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from forms_builder.forms.models import Form
-from forms_builder.forms.models import Field
 from forms_builder.forms.models import FormEntry
-from forms_builder.forms.models import FieldEntry
 
 
 # Create your views here.

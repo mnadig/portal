@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'rootcause.wsgi.application'
 FORMS_BUILDER_EXTRA_FIELDS = (
      (100, "matrix_field.MatrixFormField", "Matrix field"),
 )
-# FORMS_BUILDER_EXTRA_WIDGETS = (
-#     (100, "rootcause.FancyTextarea"),
-# )
+FORMS_BUILDER_EXTRA_WIDGETS = (
+    (100, "snapp.MatrixWidget"),
+)
 
 
 # Database
