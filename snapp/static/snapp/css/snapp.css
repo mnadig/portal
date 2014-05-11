@@ -1,4 +1,9 @@
-div.content
-{
+div.content {
     padding-top: 70px;
+}
+
+.navbar-nav>li>p {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-bottom: 0;
 }
