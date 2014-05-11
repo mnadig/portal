@@ -13,6 +13,7 @@ from django.template import RequestContext
 from django.utils.http import urlquote
 from django.views.generic.base import TemplateView
 from email_extras.utils import send_mail_template
+from matrix_field.forms import MatrixFormField
 
 from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form
@@ -80,7 +81,7 @@ class FormDetail(TemplateView):
         fields = []
         for (k, v) in form_for_form.fields.items():
             value = form_for_form.cleaned_data[k]
-            if isinstance(value, list):
+            if isinstance(value, list) and not (isinstance(v, MatrixFormField)):
                 value = ", ".join([i.strip() for i in value])
             fields.append((v.label, value))
         context = {

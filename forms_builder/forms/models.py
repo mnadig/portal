@@ -160,6 +160,8 @@ class AbstractField(models.Model):
         max_length=settings.FIELD_MAX_LENGTH)
     placeholder_text = models.CharField(_("Placeholder Text"), null=True,
         blank=True, max_length=100, editable=settings.USE_HTML5)
+    matrix_rows = models.IntegerField(_("Matrix Rows"), null=True, blank=True)
+    matrix_cols = models.IntegerField(_("Matrix Cols"), null=True, blank=True)
     fieldset = models.CharField(_("Fieldset"), null=True,
         blank=True, max_length=100)
     help_text = models.CharField(_("Help text"), blank=True, max_length=settings.HELPTEXT_MAX_LENGTH)

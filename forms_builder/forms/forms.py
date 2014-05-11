@@ -150,6 +150,9 @@ class FormForForm(forms.ModelForm):
                 field_args["choices"] = field.get_choices()
             if field_widget is not None:
                 field_args["widget"] = field_widget
+            if "dimensions" in arg_names:
+                field_args["dimensions"] = (field.matrix_cols, field.matrix_rows)
+                field_args["datatype"] = 'str'
             #
             #   Initial value for field, in order of preference:
             #
@@ -212,7 +215,8 @@ class FormForForm(forms.ModelForm):
             value = self.cleaned_data[field_key]
             if value and self.fields[field_key].widget.needs_multipart_form:
                 value = fs.save(join("forms", str(uuid4()), value.name), value)
-            if isinstance(value, list):
+            #matrix_rows and matrix_cols will be non-zero if user created a form which contained the Matrix as one of its fields.
+            elif isinstance(value, list) and not (field.matrix_rows and field.matrix_cols and field.matrix_rows > 0 and field.matrix_cols > 0):
                 value = ", ".join([v.strip() for v in value])
             if field.id in entry_fields:
                 field_entry = entry.fields.get(field_id=field.id)
