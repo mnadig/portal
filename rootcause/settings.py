@@ -115,6 +115,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
+# and https://devcenter.heroku.com/articles/getting-started-with-django#start-a-django-app-inside-a-virtualenv
+# Static asset configuration
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '~/git/rootCause/portal/static/rootcause/images/'
+STATIC_ROOT = 'staticfiles'
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
