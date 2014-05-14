@@ -91,8 +91,8 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': '',
+        'USER': 'x',
+        'PASSWORD': 'x',
         'HOST': '',
         'PORT': '',
         'NAME': 'rootcause',
