@@ -217,7 +217,6 @@ class AbstractFormEntry(models.Model):
     """
     An entry submitted via a user-built form.
     """
-    # user = models.ForeignKey(User, widget=forms.HiddenInput())
     user = models.ForeignKey(User)
     entry_time = models.DateTimeField(_("Date/time"))
 

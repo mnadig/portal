@@ -119,7 +119,7 @@ class FormForForm(forms.ModelForm):
 
     class Meta:
         model = FormEntry
-        exclude = ("form", "entry_time")
+        exclude = ("form", "entry_time", "user")
 
     def __init__(self, form, context, *args, **kwargs):
         """
@@ -128,6 +128,7 @@ class FormForForm(forms.ModelForm):
         """
         self.form = form
         self.form_fields = form.fields.visible()
+        self.user = kwargs.pop("user")
         initial = kwargs.pop("initial", {})
         # If a FormEntry instance is given to edit, stores it's field
         # values for using as initial data.
@@ -207,6 +208,7 @@ class FormForForm(forms.ModelForm):
         entry = super(FormForForm, self).save(commit=False)
         entry.form = self.form
         entry.entry_time = now()
+        entry.user = self.user
         entry.save()
         entry_fields = entry.fields.values_list("field_id", flat=True)
         new_entry_fields = []
