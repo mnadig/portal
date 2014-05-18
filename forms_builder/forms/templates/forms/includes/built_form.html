@@ -46,7 +46,7 @@
                 console.log(key + ": " + value);
             });
         };
-        
+
         // todo: any sensitive data?
         // todo: dont notify if save failed due to invalid data
 
@@ -61,21 +61,38 @@
             $(".alert").hide();
             $(".alert").alert();
             $("form li").addClass("form-group");
-            $("select").addClass("form-control");
-
+            $("form>div input[type='text']").addClass("form-control");
+            $("form>div select").addClass("form-control");
+            $("form>div textarea").addClass("form-control");
+            $("form>div>label").addClass("col-sm-2 control-label");
             groupFieldSets();
         });
     </script>
+
     <h1>{{ form.title }}</h1>
 
     {% if form.intro %}
-        <p>{{ form.intro }}</p>
+        <div class="row">
+            <div class="col-sm-7">{{ form.intro }}</div>
+        </div>
+        <hr/>
     {% endif %}
-    <form id="awesome" action="{{ form.get_absolute_url }}" method="post"
-          {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
-        {% csrf_token %}
-        {{ form_for_form.as_p }}
-        <div style="clear:left;">&nbsp;</div>
-        <input type="submit" value="{{ form.button_text }}">
-    </form>
+    <div class="row">
+        <form id="awesome" class="form-horizontal" action="{{ form.get_absolute_url }}" method="post" role="form"
+              {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+            {% csrf_token %}
+            {#        {{ form_for_form.as_p }}#}
+            {% for field in form_for_form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }}
+                    <div class="col-sm-5">
+                        {{ field }}
+                    </div>
+                </div>
+            {% endfor %}
+            <div style="clear:left;">&nbsp;</div>
+            <input type="submit" value="{{ form.button_text }}">
+        </form>
+    </div>
 {% endblock %}
