@@ -46,7 +46,8 @@ class FormDetail(TemplateView):
         form = get_object_or_404(published, slug=kwargs["slug"])
         form_for_form = FormForForm(form, RequestContext(request),
                                     request.POST or None,
-                                    request.FILES or None)
+                                    request.FILES or None,
+                                    user=request.user or None)
         if not form_for_form.is_valid():
             form_invalid.send(sender=request, form=form_for_form)
         else:
