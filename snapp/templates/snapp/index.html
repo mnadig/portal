@@ -1,10 +1,18 @@
 {% extends "snapp/base.html" %}
-
-{% block content %}
+<!--
     <h2>Welcome to the social innovation forum's online portal!</h2>
     {% if user.is_authenticated %}
         <h2>Hello, {{ user.username }}</h2>
     {% else %}
-        <div>To get started, please create an account or log in.</div>
+        <div>To get started, please create an account or <a href="/accounts/login/">log in</a>.</div>
     {% endif %}
+-->
+
+{% block content %}
+{% if user.is_authenticated %}
+<h2>Welcome to the Social Innovation Forum's online portal, <span class="usercolor">{{ user.username }}</span>!</h2>
+{% else %}
+<h2>Welcome to the Social Innovation Forum's online portal!</h2>
+<p>To get started, please <a href="/accounts/register/">create an account</a> or <a href="/accounts/login/">log in</a>.</p>
+{% endif %}
 {% endblock %}
