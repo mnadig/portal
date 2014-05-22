@@ -1,9 +1,51 @@
+/* color: #db7b00; dark orange */
+/* color: #fcf8e3; tan */
+/* color: #8b8e00; dark green */
+
+/* Base Page*/
+
 div.content {
     padding-top: 70px;
+    padding-left: 15px;
 }
 
-.navbar-nav>li>p {
+/*.navbar-nav>li>p {
     padding-top: 15px;
     padding-bottom: 15px;
     margin-bottom: 0;
+    } */
+
+/*  ul.navbar-nav>li>a {
+    color: #db7b00;
+    } */
+
+*:link {color: #db7b00;}
+*:visited {color: #8b8e00;}
+a:hover {text-decoration: underline; color: #db7b00;}
+
+.usercolor {color: #db7b00;}
+
+.menucolor {color: #db7b00;}
+
+
+/* Login Page */
+
+h1.headcolor {
+    color: #db7b00;
+    padding-bottom: 30px;
+}
+
+dd.spacing {
+    padding-bottom: 15px;
+    }
+
+dt.button {
+    padding-top: 10px;
+    }
+
+dt.button:hover {color: #8b8e00;}
+
+
+p.login2 {
+    padding-top: 20px;
 }
