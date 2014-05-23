@@ -88,6 +88,11 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
+# update your database config as follows (using previous defaults):
+# export ROOTCAUSE_DB_USER="root"
+# export ROOTCAUSE_DB_PASSWORD=""
+# export ROOTCAUSE_DB_HOST=""
+# export ROOTCAUSE_DB_NAME="rootcause"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
