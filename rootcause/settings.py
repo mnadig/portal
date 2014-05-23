@@ -96,7 +96,7 @@ DATABASES = {
         'HOST': 'us-cdbr-east-05.cleardb.net',
         'PORT': '',
         'NAME': 'heroku_bdd1a750b8f25eb',
-    }
+        }
 }
 
 # Internationalization
@@ -124,3 +124,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
