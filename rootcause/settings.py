@@ -91,12 +91,12 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'b85fa5a2cffc6b',
-        'PASSWORD': '94517e1e',
-        'HOST': 'us-cdbr-east-05.cleardb.net',
+        'USER': os.environ.get('ROOTCAUSE_DB_USER'),
+        'PASSWORD': os.environ.get('ROOTCAUSE_DB_PASSWORD'),
+        'HOST': os.environ.get('ROOTCAUSE_DB_HOST'),
         'PORT': '',
-        'NAME': 'heroku_bdd1a750b8f25eb',
-        }
+        'NAME': os.environ.get('ROOTCAUSE_DB_NAME'),
+    }
 }
 
 # Internationalization
@@ -124,5 +124,3 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
