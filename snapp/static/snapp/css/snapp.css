@@ -28,12 +28,17 @@ a:hover {text-decoration: underline; color: #db7b00;}
 .menucolor {color: #db7b00;}
 
 
+
 /* Login Page */
+
+.error {
+    color: #FF0000;
+    }
 
 h1.headcolor {
     color: #db7b00;
     padding-bottom: 30px;
-}
+    }
 
 dd.spacing {
     padding-bottom: 15px;

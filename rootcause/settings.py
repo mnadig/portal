@@ -90,12 +90,12 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'b85fa5a2cffc6b',
-        'PASSWORD': '94517e1e',
-        'HOST': 'us-cdbr-east-05.cleardb.net',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '',
-        'NAME': 'heroku_bdd1a750b8f25eb',
+        'NAME': os.path.join(BASE_DIR, 'rootcause.db'),
     }
 }
 
@@ -124,3 +124,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
