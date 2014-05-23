@@ -21,7 +21,7 @@ div.content {
 
 *:link {color: #db7b00;}
 *:visited {color: #8b8e00;}
-a:hover {text-decoration: underline; color: #db7b00;}
+a:hover {text-decoration: underline; color: #db7b00 !important;}
 
 .usercolor {color: #db7b00;}
 
@@ -33,14 +33,21 @@ a:hover {text-decoration: underline; color: #db7b00;}
 
 .error {
     color: #FF0000;
+    font-weight: bold;
     }
+
+.errorlist {
+    color: #FF0000;
+    font-weight: bold;
+    }
+
 
 h1.headcolor {
     color: #db7b00;
     padding-bottom: 30px;
     }
 
-dd.spacing {
+dd.formspace {
     padding-bottom: 15px;
     }
 
