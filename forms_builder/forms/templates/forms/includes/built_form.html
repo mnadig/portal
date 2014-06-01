@@ -65,7 +65,7 @@
             $("form>div input[type='text']").addClass("form-control");
             $("form>div select").addClass("form-control");
             $("form>div textarea").addClass("form-control");
-            $("form>div>label").addClass("col-sm-2 control-label");
+            $("form>div>label").addClass("col-sm-3 control-label");
             groupFieldSets();
         });
     </script>
@@ -74,7 +74,7 @@
 
     {% if form.intro %}
         <div class="row">
-            <div class="col-sm-7">{{ form.intro }}</div>
+            <div class="col-sm-8">{{ form.intro }}</div>
         </div>
         <hr/>
     {% endif %}
@@ -91,11 +91,13 @@
                     <div class="col-sm-5 form-field">
                         {{ field }}
                     </div>
-                    <div class="col-sm-5 form-field" style="height: 22px">
-                    <span class="rchover glyphicon glyphicon-question-sign">
-                        <span class="rctooltip">{{ field.help_text }}</span>
-                    </span>
-                    </div>
+                    {% if field.help_text %}
+                        <div class="form-field" style="height: 22px">
+                            <span class="rchover glyphicon glyphicon-question-sign">
+                                <span class="rctooltip">{{ field.help_text }}</span>
+                            </span>
+                        </div>
+                    {% endif %}
                 </div>
             {% endfor %}
             <div style="clear:left;">&nbsp;</div>
