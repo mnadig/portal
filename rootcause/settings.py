@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'snapp',
     'registration',
     'bootstrap3',
-    'sendgrid',
 )
 
 # for registration app
@@ -54,6 +53,7 @@ SENDGRID_EMAIL_HOST='smtp.sendgrid.net'
 SENDGRID_EMAIL_PORT =587
 SENDGRID_EMAIL_USERNAME = os.environ.get('ROOTCAUSE_SENDGRID_USERNAME') #export ROOTCAUSE_SENDGRID_USERNAME='rootcause'
 SENDGRID_EMAIL_PASSWORD = os.environ.get('ROOTCAUSE_SENDGRID_PASSWORD') #export ROOTCAUSE_SENDGRID_PASSWORD='r00t@Caus3'
+DEFAULT_FROM_EMAIL='socialinnovationforum@rootcause.org'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # other context processors
