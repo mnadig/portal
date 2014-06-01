@@ -48,10 +48,6 @@ INSTALLED_APPS = (
 
 # for registration app
 ACCOUNT_ACTIVATION_DAYS=7
-#EMAIL_HOST='localhost'
-#EMAIL_PORT=1025
-# EMAIL_HOST_USER='username'
-# EMAIL_HOST_PASSWORD='password'
 SENDGRID_EMAIL_BACKEND = "sendgrid.backends.SendGridEmailBackend"
 EMAIL_BACKEND = SENDGRID_EMAIL_BACKEND
 SENDGRID_EMAIL_HOST='smtp.sendgrid.net'
