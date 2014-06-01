@@ -271,6 +271,6 @@ class RegistrationProfile(models.Model):
 
         #this was the original django registration module send mail mechanism now replaced by SendGrid
         #self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
-        email = SendGridEmailMessage(subject, message, 'socialinnovationforum@rootcause.org', ['pradeep.raman@gmail.com'])
+        email = SendGridEmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [self.user.email])
         email.send()
     
