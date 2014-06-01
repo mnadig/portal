@@ -4,9 +4,12 @@ from forms_builder.forms.models import FormEntry
 from snapp.models import Track
 
 
+
 # Create your views here.
 
 from django.contrib.auth.decorators import login_required
+
+
 
 
 def index(request):
@@ -16,7 +19,10 @@ def index(request):
         context['tracks'] = Track.objects.all()
         form_entries = FormEntry.objects.filter(user=request.user)
         if form_entries:
-            context['form_entry'] = form_entries[0]
+            tracks_with_form_entries = {}
+            for form_entry in form_entries:
+                tracks_with_form_entries[form_entry.track.id] = form_entry.id
+            context['tracks_with_form_entries'] = tracks_with_form_entries
 
     return render(request, 'snapp/index.html', context)
 
