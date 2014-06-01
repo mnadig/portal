@@ -10,6 +10,8 @@ from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 
+from sendgrid.message import SendGridEmailMessage
+
 try:
     from django.contrib.auth import get_user_model
     User = get_user_model()
@@ -266,6 +268,9 @@ class RegistrationProfile(models.Model):
         
         message = render_to_string('registration/activation_email.txt',
                                    ctx_dict)
-        
-        self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+
+        #this was the original django registration module send mail mechanism now replaced by SendGrid
+        #self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        email = SendGridEmailMessage(subject, message, 'socialinnovationforum@rootcause.org', ['pradeep.raman@gmail.com'])
+        email.send()
     
