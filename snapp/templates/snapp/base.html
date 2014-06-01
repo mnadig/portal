@@ -27,21 +27,6 @@
 
 $(document).ready(function () {
     $(".alert").hide();
-    if (localStorage && localStorage.key(0)) {
-        //there should really be just one entry in localStorage which will be our draft application
-        //key is an absolute path to the draft application
-        var pathToDraftApplication = localStorage.key(0);
-
-        var linktToDraftApplication = document.createElement('a');
-        var linkTextToDraftApplication = document.createTextNode("Continue Editing application");
-        linktToDraftApplication.appendChild(linkTextToDraftApplication);
-        linktToDraftApplication.href = pathToDraftApplication;
-        var childElementToDraft = document.createElement('li');
-        childElementToDraft.appendChild(linktToDraftApplication)
-
-        //remove all links from the Apply dropdown and add the new Continue link
-        $("#apply ul").html("").append(childElementToDraft);
-    }
 });
 
 
