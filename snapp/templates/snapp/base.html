@@ -66,7 +66,7 @@ $(document).ready(function () {
                             {% for track in tracks %}
                                 <li role="presentation">
                                 {% if track.id in tracks_with_form_entries %}
-                                        <a href="/submitted_form_entries/{{ tracks_with_form_entries|get_item:track.id }}" role="menuitem">eh</a>
+                                        <a href="/submitted_form_entries/{{ tracks_with_form_entries|get_item:track.id }}" role="menuitem">{{ track.name }} (Submitted)</a>
                                 {% else %}
                                         <a href="{{ track.form.get_absolute_url }}?track_id={{ track.id }}">{{ track.name }}</a>
                                         {#                                    <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>#}
