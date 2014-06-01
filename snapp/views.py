@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from forms_builder.forms.models import Form
 from forms_builder.forms.models import FormEntry
+from snapp.models import Track
 
 
 # Create your views here.
@@ -12,12 +13,12 @@ def index(request):
     forms = Form.objects.all()
     context = {'user': request.user, 'forms': forms}
     if request.user.is_authenticated():
+        context['tracks'] = Track.objects.all()
         form_entries = FormEntry.objects.filter(user=request.user)
         if form_entries:
             context['form_entry'] = form_entries[0]
 
     return render(request, 'snapp/index.html', context)
-
 
 @login_required
 def submitted_form_entry(request, form_entry_id):
