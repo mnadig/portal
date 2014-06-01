@@ -17,6 +17,7 @@ from matrix_field.forms import MatrixFormField
 
 from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form
+from snapp.models import Track
 from forms_builder.forms.settings import USE_SITES, EMAIL_FAIL_SILENTLY
 from forms_builder.forms.signals import form_invalid, form_valid
 from forms_builder.forms.utils import split_choices
@@ -47,7 +48,8 @@ class FormDetail(TemplateView):
         form_for_form = FormForForm(form, RequestContext(request),
                                     request.POST or None,
                                     request.FILES or None,
-                                    user=request.user or None)
+                                    user=request.user or None,
+                                    track=Track.objects.get(id=request.GET.get("track_id")) or None)
         if not form_for_form.is_valid():
             form_invalid.send(sender=request, form=form_for_form)
         else:

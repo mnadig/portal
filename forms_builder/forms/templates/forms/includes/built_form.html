@@ -79,8 +79,8 @@
         <hr/>
     {% endif %}
     <div class="row">
-        <form id="awesome" class="form-horizontal" action="{{ form.get_absolute_url }}" method="post" role="form"
-              {% if form_for_form.is_multipart %}enctype="multipart/form-data"{% endif %}>
+        <form id="awesome" class="form-horizontal" action="{{ form.get_absolute_url }}?track_id={{ form_for_form.track.id }}" method="post" role="form"
+              {% if form_for_form.is_multipart %} enctype="multipart/form-data"{% endif %}>
             {% csrf_token %}
             {#        {{ form_for_form.as_p }}#}
             {% for field in form_for_form %}

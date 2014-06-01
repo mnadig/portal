@@ -6,6 +6,7 @@ from django.template.loader import get_template
 
 from forms_builder.forms.forms import FormForForm
 from forms_builder.forms.models import Form
+from snapp.models import Track
 
 
 register = template.Library()
@@ -22,6 +23,7 @@ class BuiltFormNode(template.Node):
         user = getattr(request, "user", None)
         post = getattr(request, "POST", None)
         files = getattr(request, "FILES", None)
+        track = Track.objects.get(id=request.GET.get('track_id'))
         if self.name != "form":
             lookup = {
                 str(self.name): template.Variable(self.value).resolve(context)
@@ -38,7 +40,7 @@ class BuiltFormNode(template.Node):
         t = get_template("forms/includes/built_form.html")
         context["form"] = form
         form_args = (form, context, post or None, files or None)
-        context["form_for_form"] = FormForForm(*form_args, user=user)
+        context["form_for_form"] = FormForForm(*form_args, user=user, track=track)
         return t.render(context)
 
 
