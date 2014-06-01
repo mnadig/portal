@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'snapp',
     'registration',
     'bootstrap3',
-    'sendgrid',
 )
 
 # for registration app
