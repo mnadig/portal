@@ -28,7 +28,6 @@ a:hover {text-decoration: underline; color: #db7b00 !important;}
 .menucolor {color: #db7b00;}
 
 
-
 /* Login Page */
 
 .error {
@@ -61,3 +60,24 @@ dt.button:hover {color: #8b8e00;}
 p.login2 {
     padding-top: 20px;
 }
+
+.rchover{
+     text-align:left;
+     width:16px;
+     position:relative;
+}
+
+.rctooltip{
+     display:none;
+     position:absolute;
+     border-radius: 5px;
+     padding-bottom:5px;
+     top:2px;
+     left:20px;
+     width: 500px;
+}
+
+.rchover:hover .rctooltip{
+     display:block;
+     color: #db7b00;
+}​

@@ -42,15 +42,18 @@ INSTALLED_APPS = (
     'forms_builder.forms',
     'snapp',
     'registration',
-    'bootstrap3'
+    'bootstrap3',
 )
 
 # for registration app
 ACCOUNT_ACTIVATION_DAYS=7
-EMAIL_HOST='localhost'
-EMAIL_PORT=1025
-# EMAIL_HOST_USER='username'
-# EMAIL_HOST_PASSWORD='password'
+SENDGRID_EMAIL_BACKEND = "sendgrid.backends.SendGridEmailBackend"
+EMAIL_BACKEND = SENDGRID_EMAIL_BACKEND
+SENDGRID_EMAIL_HOST='smtp.sendgrid.net'
+SENDGRID_EMAIL_PORT =587
+SENDGRID_EMAIL_USERNAME = os.environ.get('ROOTCAUSE_SENDGRID_USERNAME') #export ROOTCAUSE_SENDGRID_USERNAME='rootcause'
+SENDGRID_EMAIL_PASSWORD = os.environ.get('ROOTCAUSE_SENDGRID_PASSWORD') #export ROOTCAUSE_SENDGRID_PASSWORD='r00t@Caus3'
+DEFAULT_FROM_EMAIL='socialinnovationforum@rootcause.org'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # other context processors
