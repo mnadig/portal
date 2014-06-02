@@ -44,38 +44,23 @@ $(document).ready(function () {
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">Welcome!</a></li>
                 {% if user.is_authenticated %}
-{#                    <li class="dropdown" id="apply">#}
-{#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Apply<b class="caret"></b></a>#}
-{#                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">#}
-{#                            {% if form_entry %}#}
-{#                                <li role="presentation">#}
-{#                                    <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>#}
-{#                                </li>#}
-{#                            {% else %}#}
-{#                                {% if forms %}#}
-{#                                    {% for form in forms %}#}
-{#                                        <li role="presentation">#}
-{#                                            <a href="{{ form.get_absolute_url }}" role="menuitem" tabindex="-1" >{{ form.title }}</a>#}
-{#                                        </li>#}
-{#                                    {% endfor %}#}
-{#                                {% endif %}#}
-{#                            {% endif %}#}
-{#                        </ul>#}
-                    <li class="dropdown" id="apply">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Apply<b class="caret"></b></a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-                            {% for track in tracks %}
-                                <li role="presentation">
-                                {% if track.id in tracks_with_form_entries %}
-                                        <a href="/submitted_form_entries/{{ tracks_with_form_entries|get_item:track.id }}" role="menuitem">eh</a>
-                                {% else %}
-                                        <a href="{{ track.form.get_absolute_url }}?track_id={{ track.id }}">{{ track.name }}</a>
-                                        {#                                    <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>#}
-                                {% endif %}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
+                    {% if tracks %}
+                        <li class="dropdown" id="apply">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Apply<b class="caret"></b></a>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+                                {% for track in tracks %}
+                                    <li role="presentation">
+                                    {% if track.id in tracks_with_form_entries %}
+                                            <a href="/submitted_form_entries/{{ tracks_with_form_entries|get_item:track.id }}" role="menuitem">{{ track.name }} (Submitted)</a>
+                                    {% else %}
+                                            <a href="{{ track.form.get_absolute_url }}?track_id={{ track.id }}">{{ track.name }}</a>
+                                            {#                                    <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >View submitted application</a>#}
+                                    {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
                     {#                    todo: revisit when we're working with evaluators #}
 {#                    <li class="dropdown">#}
 {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Evaluate<b class="caret"></b></a>#}

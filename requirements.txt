@@ -17,6 +17,3 @@ dj-static==0.0.5
 gunicorn==18.0
 pystache==0.5.4
 static==1.0.2
-
-# sendgrid for email
-django-sendgrid==1.0.1

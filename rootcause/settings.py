@@ -47,13 +47,12 @@ INSTALLED_APPS = (
 
 # for registration app
 ACCOUNT_ACTIVATION_DAYS=7
-SENDGRID_EMAIL_BACKEND = "sendgrid.backends.SendGridEmailBackend"
-EMAIL_BACKEND = SENDGRID_EMAIL_BACKEND
-SENDGRID_EMAIL_HOST='smtp.sendgrid.net'
-SENDGRID_EMAIL_PORT =587
-SENDGRID_EMAIL_USERNAME = os.environ.get('ROOTCAUSE_SENDGRID_USERNAME') #export ROOTCAUSE_SENDGRID_USERNAME='rootcause'
-SENDGRID_EMAIL_PASSWORD = os.environ.get('ROOTCAUSE_SENDGRID_PASSWORD') #export ROOTCAUSE_SENDGRID_PASSWORD='r00t@Caus3'
-DEFAULT_FROM_EMAIL='socialinnovationforum@rootcause.org'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'sifapplications@rootcause.org'
+EMAIL_HOST_PASSWORD = os.environ.get('ROOTCAUSE_EMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'socialinnovationforum@rootcause.org'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     # other context processors
@@ -62,7 +61,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
-SITE_ID = 1
+SITE_ID = os.environ.get('ROOTCAUSE_SITE') or 1
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
