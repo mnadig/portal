@@ -72,7 +72,8 @@ p.login2 {
      position:absolute;
      border-radius: 5px;
      padding-bottom:5px;
-     top:2px;
+     margin: 5px;
+     top:-9px;
      left:20px;
      width: 500px;
 }
