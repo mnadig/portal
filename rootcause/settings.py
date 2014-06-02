@@ -61,7 +61,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
 )
 
-SITE_ID = 1
+SITE_ID = os.environ.get('ROOTCAUSE_FQDN') or 1
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
