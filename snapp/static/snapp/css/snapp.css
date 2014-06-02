@@ -80,4 +80,69 @@ p.login2 {
 .rchover:hover .rctooltip{
      display:block;
      color: #db7b00;
-}​
+}
+
+
+div.track-information {
+    margin-bottom: 15px;
+}
+
+div.track-information div.track-title {
+    color: #8b8d09;
+    text-align: center;
+    text-decoration: underline;
+    font-weight: bold;
+ }
+
+div.track-information div.track-sponsors {
+    text-align: center;
+}
+
+h4 {
+    color: #8b8d09;
+    text-align: center;
+    font-size: 130%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #8b8d09;
+    text-align: center;
+    font-size: 150%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+h5 {
+    color: #df7a1c;
+    font-weight: bold;
+    text-align: center;
+}
+
+div.message {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+div.message div.title {
+    color: #df7a1c;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+
+div.track-callout div.title {
+    text-align: center;
+    font-weight: bold;
+}
+
+div.track-callout div.message {
+    text-align: center;
+    font-style: italic;
+}
+
+div.footnote {
+    border: 2px solid black;
+    padding: 10px;
+}
