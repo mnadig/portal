@@ -20,3 +20,7 @@ static==1.0.2
 
 # sendgrid for email
 django-sendgrid==1.0.1
+
+# captcha
+django-recaptcha==1.0
+#recaptcha-client==1.0.6

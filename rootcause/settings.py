@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'snapp',
     'registration',
     'bootstrap3',
+    'captcha',
 )
 
 # for registration app
@@ -134,3 +135,9 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+RECAPTCHA_PUBLIC_KEY = '6LcggfQSAAAAAL3NAYWvpGBoZohX1JeaTANYGtBa'
+RECAPTCHA_PRIVATE_KEY =  '6LcggfQSAAAAALXiviWsya1c2WtVdD9XpfrQWm-8'
+#RECAPTCHA_USE_SSL = True
+
+

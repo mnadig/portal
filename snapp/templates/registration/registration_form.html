@@ -15,12 +15,19 @@
 <dl>
     <dt><label for="id_username">Username:</label>{% if form.username.errors %}<span class="error">{{ form.username.errors.as_text }}</span>{% endif %}</dt>
     <dd class="formspace">{{ form.username }}</dd>
+
     <dt><label for="id_email">Email address:</label>{% if form.email.errors %}<span class="error">{{ form.email.errors.as_text }}</span>{% endif %}</dt>
     <dd class="formspace">{{ form.email }}</dd>
+
     <dt><label for="id_password1">Password:</label>{% if form.password1.errors %}<span class="error">{{ form.password1.errors.as_text }}</span>{% endif %}</dt>
     <dd class="formspace">{{ form.password1 }}</dd>
+
     <dt><label for="id_password2">Retype Password:</label>{% if form.password2.errors %}<span class="error">{{ form.password2.errors.as_text }}</span>{% endif %}</dt>
     <dd class="formspace">{{ form.password2 }}</dd>
+
+    <dt><label for="id_recaptcha"></label></dt>
+    <dd class="formspace">{{ form.captcha }}</dd>
+
     <dt class="button"><input type="submit" value="Register &rarr;"></dt>
 </dl>
   </form>

@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
+from captcha.fields import ReCaptchaField
 
 class RegistrationForm(forms.Form):
     """
@@ -38,6 +39,7 @@ class RegistrationForm(forms.Form):
                                 label=_("Password"))
     password2 = forms.CharField(widget=forms.PasswordInput,
                                 label=_("Password (again)"))
+    captcha = ReCaptchaField()
     
     def clean_username(self):
         """
