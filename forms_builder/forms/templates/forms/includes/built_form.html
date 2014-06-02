@@ -71,7 +71,6 @@
     </script>
 
     <h1>{{ form.title }}</h1>
-
     {% if form.intro %}
         <div class="row">
             <div class="col-sm-8">{{ form.intro }}</div>
@@ -92,9 +91,9 @@
                         {{ field }}
                     </div>
                     {% if field.help_text %}
-                        <div class="form-field" style="height: 22px">
+                        <div class="form-field" style="height: 22px" title="{{ field.help_text }}">
                             <span class="rchover glyphicon glyphicon-question-sign" style="margin: 9px">
-                                <div class="rctooltip">{{ field.help_text }}</div>
+{#                                <p class="rctooltip">{{ field.help_text }}</p>#}
                             </span>
                         </div>
                     {% endif %}
