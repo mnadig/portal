@@ -107,6 +107,9 @@ DATABASES = {
     }
 }
 
+# No reason for associating forms with sites, there will only be one site
+FORMS_BUILDER_USE_SITES = False
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
