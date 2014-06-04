@@ -7,7 +7,16 @@
 
         var localStoreKey = document.URL;
         function saveDraft() {
+
             var formData = $('#awesome :input').serializeArray();
+            // don't save Django's csrf token
+            $.each(formData, function (index, value) {
+                if (value !== undefined && value.name === "csrfmiddlewaretoken")
+                    formData.splice(index, 1);
+            });
+
+            formData.shift();
+
             localStorage[localStoreKey] = JSON.stringify(formData);
             showAlertTemporarily();
         }
