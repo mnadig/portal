@@ -45,7 +45,7 @@
             $('#awesome > .form-group').each(function (idx, formGroup) {
 
                 function addToFieldset(fld) {
-                    fieldsets[fld.dataset.fieldset] = fieldsets[fld.dataset.fieldset] || $("<fieldset><legend>" + fld.dataset.fieldset + "</legend></fieldset>")
+                    fieldsets[fld.dataset.fieldset] = fieldsets[fld.dataset.fieldset] || $("<fieldset><legend class='form-legend'>" + fld.dataset.fieldset + "</legend></fieldset>")
                     fieldsets[fld.dataset.fieldset].append(formGroup)
                 }
 
@@ -91,7 +91,7 @@
             $("form>div input[type='text']").addClass("form-control");
             $("form>div select").addClass("form-control");
             $("form>div textarea").addClass("form-control");
-            $("form>div>label").addClass("col-sm-3 control-label");
+            $("form>div>label").addClass("col-sm-3 control-label form-label");
             groupFieldSets();
         });
     </script>

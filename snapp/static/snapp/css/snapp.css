@@ -177,3 +177,12 @@ div.faq p{
     margin-top: 3px;
     margin-bottom: 4px;
 }
+
+.form-legend {
+    font-size: 17px;
+}
+
+.form-label {
+    font-size: 13px;
+}
+
