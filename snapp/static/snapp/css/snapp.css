@@ -147,3 +147,14 @@ div.footnote {
     border: 2px solid black;
     padding: 10px;
 }
+
+div.faq div.title{
+    color: #df7a1c;
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 4px;
+}
+
+div.faq p{
+    width: 80%;
+}
