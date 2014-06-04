@@ -158,3 +158,22 @@ div.faq div.title{
 div.faq p{
     width: 80%;
 }
+
+#logo-container {
+    margin-top:20px;
+    width: 200px;
+}
+
+/* resize images */
+#logo-container img {
+    width: 100%;
+    height: auto;
+}
+
+#inno-title{
+    color: #8b8d09;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-bottom: 4px;
+}
