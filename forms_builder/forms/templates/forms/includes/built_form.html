@@ -34,10 +34,27 @@
             fieldsets = {}
 
             $('#awesome > .form-group').each(function (idx, formGroup) {
-                var inputField = $(formGroup).find(".form-field").children()[0];
-                if (inputField.dataset.fieldset) {
-                    fieldsets[inputField.dataset.fieldset] = fieldsets[inputField.dataset.fieldset] || $("<fieldset><legend>" + inputField.dataset.fieldset + "</legend></fieldset>")
-                    fieldsets[inputField.dataset.fieldset].append(formGroup)
+
+                function addToFieldset(fld) {
+                    fieldsets[fld.dataset.fieldset] = fieldsets[fld.dataset.fieldset] || $("<fieldset><legend>" + fld.dataset.fieldset + "</legend></fieldset>")
+                    fieldsets[fld.dataset.fieldset].append(formGroup)
+                }
+
+                var fld = $(formGroup).find(".form-field").children()[0];
+
+                // multi check-box
+                if ($(fld).prop('tagName') === "UL") {
+                    console.log("hello")
+                    var inputField = $(fld).find("li > label").children()[0];
+                    if (inputField.dataset.fieldset) {
+                        addToFieldset(inputField);
+                    }
+                }
+                // assume standard input
+                else {
+                    if (fld.dataset.fieldset) {
+                        addToFieldset(fld);
+                    }
                 }
             });
             $.each(fieldsets, function (key, value) {
