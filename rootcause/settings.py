@@ -87,6 +87,8 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
     (100, "snapp.MatrixWidget"),
 )
 
+FORMS_BUILDER_FIELD_MAX_LENGTH = 1200
+
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
