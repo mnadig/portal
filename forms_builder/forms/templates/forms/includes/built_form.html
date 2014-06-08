@@ -15,8 +15,6 @@
                     formData.splice(index, 1);
             });
 
-            formData.shift();
-
             localStorage[localStoreKey] = JSON.stringify(formData);
             showAlertTemporarily();
         }
