@@ -6,7 +6,8 @@
 
 div.content {
     padding-top: 70px;
-    padding-left: 15px;
+    padding-left: 300px;
+    width:  1200px;
 }
 
 /*.navbar-nav>li>p {
@@ -107,15 +108,16 @@ h4 {
     margin-bottom: 10px;
 }
 
-h3 {
-    color: #8b8d09;
+h3.rootCauseOrangeBold {
+    color: #df7a1c;
     text-align: center;
     font-size: 150%;
     margin-top: 10px;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
-h5 {
+h5.rootCauseOrange {
     color: #df7a1c;
     font-weight: bold;
     text-align: center;

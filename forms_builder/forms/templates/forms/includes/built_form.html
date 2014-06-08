@@ -15,8 +15,6 @@
                     formData.splice(index, 1);
             });
 
-            formData.shift();
-
             localStorage[localStoreKey] = JSON.stringify(formData);
             showAlertTemporarily();
         }
@@ -28,10 +26,18 @@
                 $(draftData).each(function (draftDataIdx, draftDataField) {
                     for (idx in draftData) {
                         if (inputField.name === draftDataField.name) {
-                            if (inputField.type === "checkbox") {
-                                $(inputField).prop('checked', true);
+                            if (inputField.type === "checkbox" || inputField.type === "radio") {
+                                if (inputField.value === draftDataField.value)
+                                    $(inputField).prop('checked', true);
                             }
-                            inputField.value = draftDataField.value;
+{#                            else if (inputField.type === "radio") {#}
+{#                                if (inputField.value === draftDataField.value)#}
+{#                                    $(inputField).prop('checked', true);#}
+{#                            }#}
+                            // text field
+                            else {
+                                inputField.value = draftDataField.value;
+                            }
                         }
                     }
                 });
@@ -53,7 +59,6 @@
 
                 // multi check-box
                 if ($(fld).prop('tagName') === "UL") {
-                    console.log("hello")
                     var inputField = $(fld).find("li > label").children()[0];
                     if (inputField.dataset.fieldset) {
                         addToFieldset(inputField);
@@ -93,8 +98,38 @@
             $("form>div textarea").addClass("form-control");
             $("form>div>label").addClass("col-sm-3 control-label form-label");
             groupFieldSets();
+
+            $('#form-submit-btn-requiring-confirmation').click(function(){
+                $("#confirmation-modal").modal({show:true});
+                console.log("no way jose!");
+            });
+            $('#confirm-submission-btn').click(function() {
+                $('#confirmation-modal').modal('hide');
+                $('#form-submit-btn').click();
+            });
+
+            $('#form-submit-btn').hide();
         });
     </script>
+    {# Confirmation modal #}
+    <div class="modal fade" id="confirmation-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Submission Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you are ready to submit? Once submitted, the form will be available for your viewing
+                        but can not be resubmitted for this track.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirm-submission-btn">Yes, Submit</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <h1>{{ form.title }}</h1>
     {% if form.intro %}
@@ -126,7 +161,8 @@
                 </div>
             {% endfor %}
             <div style="clear:left;">&nbsp;</div>
-            <input type="submit" value="{{ form.button_text }}">
+            <input id='form-submit-btn' type="submit" value="{{ form.button_text }}">
         </form>
+        <button id="form-submit-btn-requiring-confirmation">Submit</button>
     </div>
 {% endblock %}
