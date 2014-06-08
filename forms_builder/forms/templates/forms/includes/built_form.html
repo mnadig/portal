@@ -29,7 +29,14 @@
                             if (inputField.type === "checkbox") {
                                 $(inputField).prop('checked', true);
                             }
-                            inputField.value = draftDataField.value;
+                            else if (inputField.type === "radio") {
+                                if (inputField.value === draftDataField.value) {
+                                    $(inputField).prop('checked', true);
+                            }
+                            // text field
+                            else {
+                                inputField.value = draftDataField.value;
+                            }
                         }
                     }
                 });
