@@ -26,13 +26,14 @@
                 $(draftData).each(function (draftDataIdx, draftDataField) {
                     for (idx in draftData) {
                         if (inputField.name === draftDataField.name) {
-                            if (inputField.type === "checkbox") {
-                                $(inputField).prop('checked', true);
-                            }
-                            else if (inputField.type === "radio") {
+                            if (inputField.type === "checkbox" || inputField.type === "radio") {
                                 if (inputField.value === draftDataField.value)
                                     $(inputField).prop('checked', true);
                             }
+{#                            else if (inputField.type === "radio") {#}
+{#                                if (inputField.value === draftDataField.value)#}
+{#                                    $(inputField).prop('checked', true);#}
+{#                            }#}
                             // text field
                             else {
                                 inputField.value = draftDataField.value;
