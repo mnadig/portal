@@ -30,10 +30,6 @@
                                 if (inputField.value === draftDataField.value)
                                     $(inputField).prop('checked', true);
                             }
-{#                            else if (inputField.type === "radio") {#}
-{#                                if (inputField.value === draftDataField.value)#}
-{#                                    $(inputField).prop('checked', true);#}
-{#                            }#}
                             // text field
                             else {
                                 inputField.value = draftDataField.value;
@@ -107,6 +103,14 @@
                 $('#confirmation-modal').modal('hide');
                 $('#form-submit-btn').click();
             });
+            $('#terms-check').click(function() {
+                if($('#terms-check').is(':checked')){
+                    $('#confirm-submission-btn').removeAttr('disabled');
+                } else {
+                    $('#confirm-submission-btn').attr('disabled', 'true');
+                }
+
+            })
 
             $('#form-submit-btn').hide();
         });
@@ -120,12 +124,16 @@
                     <h4 class="modal-title">Submission Confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you are ready to submit? Once submitted, the form will be available for your viewing
-                        but can not be resubmitted for this track.</p>
+                    <p>Are you sure that you are ready to submit? All submissions are final. Once submitted, you may view your completed application but you cannot make any changes or additions to the application.</p>
+
+                    <input id = "terms-check" type="checkbox" name="terms">
+                        I agree to the terms of the <a href="http://www.rootcause.org/docs/Social-Innovators/Resources/social-innovator-statement-agreement.pdf" target="_blank">Social Innovator Statement Agreement</a>
+                    </input>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirm-submission-btn">Yes, Submit</button>
+                    <button type="button" class="btn btn-primary" id="confirm-submission-btn" disabled="true">Submit</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

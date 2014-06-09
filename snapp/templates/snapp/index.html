@@ -9,6 +9,8 @@
 -->
 
 {% block content %}
+
+<div class="homePagecontent">
 {% if user.is_authenticated %}
     <h3 class="rootCauseOrangeBold">Social Innovation Forum</h3>
 
@@ -147,4 +149,5 @@
 <h3 class="rootCauseOrangeBold">Welcome to the Social Innovation Forum's online portal!</h3>
 <p align="center">To get started, please <a href="/accounts/register/">create an account</a> or <a href="/accounts/login/">log in</a>.</p>
 {% endif %}
+</div>
 {% endblock %}

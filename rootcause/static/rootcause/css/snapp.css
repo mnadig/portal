@@ -6,6 +6,11 @@
 
 div.content {
     padding-top: 70px;
+    padding-left: 15px;
+}
+
+div.homePagecontent {
+    padding-top: 70px;
     padding-left: 300px;
     width:  1200px;
 }
