@@ -27,24 +27,44 @@ from registration.backends.default.views import RegistrationView
 
 
 urlpatterns = patterns('',
-                       url(r'^activate/complete/$',
-                           TemplateView.as_view(template_name='registration/activation_complete.html'),
-                           name='registration_activation_complete'),
-                       # Activation keys get matched by \w+ instead of the more specific
-                       # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
-                       # that way it can return a sensible "invalid key" message instead of a
-                       # confusing 404.
-                       url(r'^activate/(?P<activation_key>\w+)/$',
-                           ActivationView.as_view(),
-                           name='registration_activate'),
-                       url(r'^register/$',
-                           RegistrationView.as_view(),
-                           name='registration_register'),
-                       url(r'^register/complete/$',
-                           TemplateView.as_view(template_name='registration/registration_complete.html'),
-                           name='registration_complete'),
-                       url(r'^register/closed/$',
-                           TemplateView.as_view(template_name='registration/registration_closed.html'),
-                           name='registration_disallowed'),
-                       (r'', include('registration.auth_urls')),
-                       )
+        url(r'^activate/complete/$',
+            TemplateView.as_view(template_name='registration/activation_complete.html'),
+            name='registration_activation_complete'),
+
+        # Activation keys get matched by \w+ instead of the more specific
+        # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
+        # that way it can return a sensible "invalid key" message instead of a
+        # confusing 404.
+        url(r'^activate/(?P<activation_key>\w+)/$',
+            ActivationView.as_view(),
+            name='registration_activate'),
+        url(r'^register/$',
+            RegistrationView.as_view(),
+            name='registration_register'),
+        url(r'^register/complete/$',
+            TemplateView.as_view(template_name='registration/registration_complete.html'),
+            name='registration_complete'),
+        url(r'^register/closed/$',
+            TemplateView.as_view(template_name='registration/registration_closed.html'),
+            name='registration_disallowed'),
+        (r'', include('registration.auth_urls')),
+
+        # Password reset
+        url(r'^accounts/password/reset/$', 'django.contrib.auth.views.password_reset',
+            {'template_name': 'registration/rc_password_reset_form.html',
+             'post_reset_redirect': '/accounts/password/reset/done/'},
+            name="reset_password"),
+
+        url(r'^accounts/password/reset/done/$', 'django.contrib.auth.views.password_reset_done',
+            {'template_name': 'registration/rc_password_reset_done.html'},
+            name='password_reset_done'),
+
+        url(r'^accounts/password/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+            'django.contrib.auth.views.password_reset_confirm',
+            {'template_name': 'registration/rc_password_reset_complete.html'},
+            name='password_reset_confirm'),
+
+        url(r'^accounts/password/done/$', 'django.contrib.auth.views.password_reset_complete',
+            {'template_name': 'registration/rc_password_reset_complete.html'},
+            name='password_reset_complete')
+)
