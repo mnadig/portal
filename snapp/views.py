@@ -54,7 +54,7 @@ def submitted_form_entry(request, form_entry_id):
 
         return render(request, 'snapp/submitted_form.html', context)
     else:
-        raise PermissionDenied;
+        raise PermissionDenied
 
 
 @login_required
