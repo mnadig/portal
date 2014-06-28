@@ -58,19 +58,45 @@
                             </ul>
                         </li>
                     {% endif %}
-                    {#                    todo: revisit when we're working with evaluators #}
-                    {#                    <li class="dropdown">#}
-                    {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Evaluate<b class="caret"></b></a>#}
-                    {#                        <ul class="dropdown-menu list-group" role="menu" aria-labelledby="dropdownMenu2">#}
-                    {#                            <li><a href="#" role="menuitem" tabindex="-1" >Track 1</a></li>#}
-                    {#                            <li><a href="#" role="menuitem" tabindex="-1" >Track 2</a></li>#}
-                    {#                            <li><a href="#" role="menuitem" tabindex="-1" >Track 3</a></li>#}
-                    {#                            {% if user.is_superuser %}#}
-                    {#                                <li class="divider"></li>#}
-                    {#                                <li><a href="/evaluation_dashboard" role="menuitem" tabindex="-1" >View All Tracks</a></li>#}
-                    {#                            {% endif %}#}
-                    {#                        </ul>#}
-                    {#                    </li>#}
+{#                    <li class="dropdown">#}
+{#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Evaluate<b class="caret"></b></a>#}
+{#                        <ul class="dropdown-menu list-group" role="menu" aria-labelledby="dropdownMenu2">#}
+{#                            {% if user.is_superuser %}#}
+{#                                {% if tracks %}#}
+{#                                    {% for track in tracks %}#}
+{#                                        <li role="presentation">#}
+{#                                            {% if track.id in tracks_with_form_entries %}#}
+{#                                                <a href="/submitted_form_entries/{{ tracks_with_form_entries|get_item:track.id }}"#}
+{#                                                   role="menuitem">{{ track.name }} (Submitted)</a>#}
+{#                                                <a href="/submitted_form_entries/track{{ track.id }}" role="menuitem" tabindex="-1" >View Submitted Forms For Track: {{ track.name }}</a>#}
+{#                                            {% else %}#}
+{#                                                <a href="#" role="menuitem" tabindex="-1">Blah</a>#}
+{#                                                <a href="{{ track.form.get_absolute_url }}?track_id={{ track.id }}">{{ track.name }}</a>#}
+{#                                                                                    <a href="/submitted_form_entries/{{ form_entry.id }}" role="menuitem" tabindex="-1" >Tracks without submitted applications</a>#}
+{#                                            {% endif %}#}
+{#                                        </li>#}
+{#                                    {% endfor %}#}
+{#                                    <li><a href="#" role="menuitem" tabindex="-1" >Track plc 1</a></li>#}
+{#                                    <li class="divider"></li>#}
+{#                                    <li><a href="/evaluation_dashboard" role="menuitem" tabindex="-1" >View All Tracks</a></li>#}
+{#                                {% else %}#}
+{#                                    <li><span>No Track To Show</span></li>#}
+{#                                {% endif %}#}
+{#                            {% endif %}#}
+{#                        </ul>#}
+{#                    </li>#}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">View Tracks<b class="caret"></b></a>
+                        <ul class="dropdown-menu list-group" role="menu" aria-labelledby="dropdownMenu2">
+                            {% if user.is_superuser %}
+                                {% if tracks %}
+                                    <li><a href="/evaluation_dashboard" role="menuitem" tabindex="-1" >View All Tracks</a></li>
+                                {% else %}
+                                    <li><span>No Track To Show</span></li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                    </li>
                     <li><a href="/accounts/logout">Logout</a></li>
                 {% else %}
                     <li class="dropdown">

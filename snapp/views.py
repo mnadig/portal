@@ -25,6 +25,7 @@ def enrich_context_for_application_dropdown(request, context):
                 tracks_with_form_entries[form_entry.track.id] = form_entry.id
             context['tracks_with_form_entries'] = tracks_with_form_entries
 
+
 def index(request):
     context = {}
     enrich_context_for_application_dropdown(request, context)
@@ -39,10 +40,11 @@ def submitted_form_entry(request, form_entry_id):
 
         rows = []
         import collections
+
         fieldsets = collections.OrderedDict()
 
         for field_entry in form_entry.fields.all():
-            row={'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
+            row = {'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
             fieldset = form_entry.fieldset_for_field(field_entry)
             if fieldset is not None:
                 if fieldset not in fieldsets.keys():
@@ -56,11 +58,15 @@ def submitted_form_entry(request, form_entry_id):
     else:
         raise PermissionDenied
 
-
 @login_required
 def evaluation_dashboard(request):
-    form_entries = FormEntry.objects.all()
-    context = {'user': request.user, 'form_entries': form_entries}
+    track_entries = {}
+    tracks = Track.objects.all()
+
+    for track in tracks:
+        track_entries[track] = FormEntry.objects.filter(track=track)
+
+    context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
 
@@ -72,9 +78,16 @@ def evaluation_form(request, form_entry_id):
 
     return render(request, 'snapp/evaluation_form.html', context)
 
+
 def faq(request):
     context = {}
     enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/faq.html', context)
+
+
+def form_entries_by_track(request, track_id):
+    form_entries = FormEntry.objects.all()
+    context = {'user': request.user, 'form_entries': form_entries, 'track_id': track_id}
+    return render(request, 'snapp/evaluation_dashboard.html', context)
 
 
