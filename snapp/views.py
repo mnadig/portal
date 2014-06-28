@@ -37,7 +37,6 @@ def index(request):
 def submitted_form_entry(request, form_entry_id):
     form_entry = FormEntry.objects.get(pk=form_entry_id)
     if request.user.pk == form_entry.user.pk or request.user.is_superuser:
-
         rows = []
         import collections
 
