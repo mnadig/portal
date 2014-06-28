@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^evaluation_dashboard/', 'snapp.views.evaluation_dashboard', name='evaluation_dashboard'),
     url(r'^evaluations/form/([0-9]+)', 'snapp.views.evaluation_form', name='evaluation_form'),
     url(r'^submitted_form_entries/([0-9]+)', 'snapp.views.submitted_form_entry', name='submitted_form_entry'),
+    # url(r'^submitted_form_entries/track([0-9]+)', 'snapp.views.form_entries_by_track', name='form_entries_by_track'),
     url(r'^index/', index, name="index"),
     url(r'^faq/', faq, name="faq"),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
