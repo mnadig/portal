@@ -9,10 +9,14 @@ div.content {
     padding-left: 15px;
 }
 
+div.spacer {
+    margin-top: 40px;
+}
+
 div.homePagecontent {
     padding-top: 70px;
     padding-left: 300px;
-    width:  1200px;
+    width: 1200px;
 }
 
 /*.navbar-nav>li>p {
@@ -25,70 +29,81 @@ div.homePagecontent {
     color: #db7b00;
     } */
 
-*:link {color: #db7b00;}
-*:visited {color: #8b8e00;}
-a:hover {text-decoration: underline; color: #db7b00 !important;}
+*:link {
+    color: #db7b00;
+}
 
-.usercolor {color: #db7b00;}
+*:visited {
+    color: #8b8e00;
+}
 
-.menucolor {color: #db7b00;}
+a:hover {
+    text-decoration: underline;
+    color: #db7b00 !important;
+}
 
+.usercolor {
+    color: #db7b00;
+}
+
+.menucolor {
+    color: #db7b00;
+}
 
 /* Login Page */
 
 .error {
     color: #FF0000;
     font-weight: bold;
-    }
+}
 
 .errorlist {
     color: #FF0000;
     font-weight: bold;
-    }
-
+}
 
 h1.headcolor {
     color: #db7b00;
     padding-bottom: 30px;
-    }
+}
 
 dd.formspace {
     padding-bottom: 15px;
-    }
+}
 
 dt.button {
     padding-top: 10px;
-    }
+}
 
-dt.button:hover {color: #8b8e00;}
-
+dt.button:hover {
+    color: #8b8e00;
+}
 
 p.login2 {
     padding-top: 20px;
 }
 
-.rchover{
-     text-align:left;
-     width:16px;
-     position:relative;
+.rchover {
+    text-align: left;
+    width: 16px;
+    position: relative;
 }
 
-.rctooltip{
-     display:none;
-     position:absolute;
-     border-radius: 5px;
-     padding-bottom:5px;
-     margin: 5px;
-     top:-9px;
-     left:20px;
-     width: 500px;
+.rctooltip {
+    display: none;
+    position: absolute;
+    border-radius: 5px;
+    padding-bottom: 5px;
+    margin: 5px;
+    top: -9px;
+    left: 20px;
+    width: 500px;
 }
 
-.rchover:hover .rctooltip{
-     display:block;
-     color: #db7b00;
+.rchover:hover .rctooltip {
+    display: block;
+    color: #db7b00;
 }
-
 
 div.track-information {
     margin-bottom: 15px;
@@ -99,7 +114,7 @@ div.track-information div.track-title {
     text-align: center;
     text-decoration: underline;
     font-weight: bold;
- }
+}
 
 div.track-information div.track-sponsors {
     text-align: center;
@@ -139,7 +154,6 @@ div.message div.title {
     text-decoration: underline;
 }
 
-
 div.track-callout div.title {
     text-align: center;
     font-weight: bold;
@@ -155,19 +169,19 @@ div.footnote {
     padding: 10px;
 }
 
-div.faq div.title{
+div.faq div.title {
     color: #df7a1c;
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 4px;
 }
 
-div.faq p{
+div.faq p {
     width: 80%;
 }
 
 #logo-container {
-    margin-top:20px;
+    margin-top: 20px;
     width: 200px;
 }
 
@@ -177,7 +191,7 @@ div.faq p{
     height: auto;
 }
 
-#inno-title{
+#inno-title {
     color: #8b8d09;
     font-size: 16px;
     font-weight: bold;
@@ -191,5 +205,21 @@ div.faq p{
 
 .form-label {
     font-size: 13px;
+}
+
+.fieldset-entries {
+    margin-left: 20px;
+}
+
+.answer {
+    padding: 15px 9px;
+    margin-bottom: 14px;
+    /*background-color: #fcf8e3;*/
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+}
+
+.answer.p {
+    text-indent: 50px;
 }
 

@@ -225,6 +225,9 @@ class AbstractFormEntry(models.Model):
     def label_for_field(self, field_entry):
         return Field.objects.get(pk=field_entry.field_id).label
 
+    def fieldset_for_field(self, field_entry):
+        return Field.objects.get(pk=field_entry.field_id).fieldset
+
     class Meta:
         verbose_name = _("Form entry")
         verbose_name_plural = _("Form entries")

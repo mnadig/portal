@@ -1,22 +1,40 @@
 {% extends "snapp/base.html" %}
+{% load snapp_tags %}
 
 {% block content %}
-    <table class="table table-bordered ">
-        <thead>
-        <tr class="info">
-            <th>Question</th>
-            <th>Answer</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for row in rows %}
-            <tr>
-                <td>{{ row.label }}</td>
-                <td>{{ row.value }}</td>
-            </tr>
+    <h1>{{ form_entry.form.title }}</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                {{ form_entry.form.description }}
+            </div>
+        </div>
 
+        {% for fieldset in fieldsets.keys %}
+            <div class="spacer"/>
+            <fieldset>
+                <legend class="form-legend">{{ fieldset }}</legend>
+                {% for row in fieldsets|get_item:fieldset %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div><b>{{ row.label }}</b></div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="answer bg-warning"><p>{{ row.value }}</p></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </fieldset>
         {% endfor %}
-        </tbody>
-    </table>
-
+        {% for row in rows %}
+            <div class="row">
+                <div class="col-sm-3">
+                    <div><b>{{ row.label }}</b></div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="answer bg-warning"><p>{{ row.value }}</p></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

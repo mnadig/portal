@@ -2,6 +2,8 @@ from django.shortcuts import render
 from forms_builder.forms.models import Form
 from forms_builder.forms.models import FormEntry
 from snapp.models import Track
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.decorators import user_passes_test
 
 
 
@@ -28,16 +30,32 @@ def index(request):
     enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/index.html', context)
 
+
+# @user_passes_test(lambda u: u.is_superuser)
 @login_required
 def submitted_form_entry(request, form_entry_id):
     form_entry = FormEntry.objects.get(pk=form_entry_id)
-    rows = []
-    for field_entry in form_entry.fields.all():
-        row={'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
-        rows.append(row)
-    context = {'form_entry': form_entry, 'rows': rows}
+    if request.user.pk == form_entry.user.pk or request.user.is_superuser:
 
-    return render(request, 'snapp/submitted_form.html', context)
+        rows = []
+        import collections
+        fieldsets = collections.OrderedDict()
+
+        for field_entry in form_entry.fields.all():
+            row={'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
+            fieldset = form_entry.fieldset_for_field(field_entry)
+            if fieldset is not None:
+                if fieldset not in fieldsets.keys():
+                    fieldsets[fieldset] = list()
+                fieldsets[fieldset].append(row)
+            else:
+                rows.append(row)
+        context = {'form_entry': form_entry, 'rows': rows, 'fieldsets': fieldsets}
+
+        return render(request, 'snapp/submitted_form.html', context)
+    else:
+        raise PermissionDenied;
+
 
 @login_required
 def evaluation_dashboard(request):
