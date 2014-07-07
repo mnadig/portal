@@ -10,7 +10,7 @@ sphinx-me==0.2.1
 wsgiref==0.1.2
 xlwt==0.7.5
 django-bootstrap3==4.4.0
-
+boto==2.30.0
 # installed while deploying to Heroku using https://devcenter.heroku.com/articles/getting-started-with-django#start-a-django-app-inside-a-virtualenv
 dj-database-url==0.3.0
 dj-static==0.0.5
