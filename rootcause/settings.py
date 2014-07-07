@@ -86,7 +86,9 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
 
 FORMS_BUILDER_FIELD_MAX_LENGTH = 1200
 
-
+S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+S3_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+S3_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 

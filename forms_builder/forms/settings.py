@@ -46,3 +46,8 @@ CHOICES_MAX_LENGTH = getattr(settings, "FORMS_BUILDER_CHOICES_MAX_LENGTH", 1000)
 # Does sending emails fail silently or raise an exception.
 EMAIL_FAIL_SILENTLY = getattr(settings, "FORMS_BUILDER_EMAIL_FAIL_SILENTLY",
                               settings.DEBUG)
+
+# hack for s3
+S3_BUCKET_NAME = getattr(settings, 'S3_BUCKET_NAME')
+S3_ID = getattr(settings, 'S3_ID')
+S3_KEY = getattr(settings, 'S3_KEY')
