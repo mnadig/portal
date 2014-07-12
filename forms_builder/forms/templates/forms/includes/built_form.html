@@ -94,22 +94,16 @@
             $("form>div>label").addClass("col-sm-3 control-label form-label");
             groupFieldSets();
 
-            $(".emailfield, .form-control").keypress(function (e) {
-                if (e.which == 13) {
-                    e.preventDefault();
-                    $("#confirmation-modal").modal({show:true});
-                }
+            $("#awesome").submit(function (e) {
+                e.preventDefault();
+                $("#confirmation-modal").modal({show: true});
             });
 
-            $('#form-submit-btn-requiring-confirmation').click(function(){
-                $("#confirmation-modal").modal({show:true});
+            $('#form-submit-btn-requiring-confirmation').click(function () {
+                $("#confirmation-modal").modal({show: true});
             });
-            $('#confirm-submission-btn').click(function() {
-                $('#confirmation-modal').modal('hide');
-                $('#form-submit-btn').click();
-            });
-            $('#terms-check').click(function() {
-                if($('#terms-check').is(':checked')){
+            $('#terms-check').click(function () {
+                if ($('#terms-check').is(':checked')) {
                     $('#confirm-submission-btn').removeAttr('disabled');
                 } else {
                     $('#confirm-submission-btn').attr('disabled', 'true');
@@ -129,19 +123,26 @@
                     <h4 class="modal-title">Submission Confirmation</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure that you are ready to submit? All submissions are final. Once submitted, you may view your completed application but you cannot make any changes or additions to the application.</p>
+                    <p>Are you sure that you are ready to submit? All submissions are final. Once submitted, you may
+                        view your completed application but you cannot make any changes or additions to the
+                        application.</p>
 
-                    <input id = "terms-check" type="checkbox" name="terms">
-                        I agree to the terms of the <a href="http://www.rootcause.org/docs/Social-Innovators/Resources/social-innovator-statement-agreement.pdf" target="_blank">Social Innovator Statement Agreement</a>
+                    <input id="terms-check" type="checkbox" name="terms">
+                    I agree to the terms of the <a
+                        href="http://www.rootcause.org/docs/Social-Innovators/Resources/social-innovator-statement-agreement.pdf"
+                        target="_blank">Social Innovator Statement Agreement</a>
                     </input>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="confirm-submission-btn" disabled="true">Submit</button>
+                    <button type="button" class="btn btn-primary" id="confirm-submission-btn" disabled="true">Submit
+                    </button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
     <h1>{{ form.title }}</h1>
@@ -152,8 +153,9 @@
         <hr/>
     {% endif %}
     <div class="row">
-        <form id="awesome" class="form-horizontal" action="{{ form.get_absolute_url }}?track_id={{ form_for_form.track.id }}" method="post" role="form"
-              {% if form_for_form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+        <form id="awesome" class="form-horizontal"
+              action="{{ form.get_absolute_url }}?track_id={{ form_for_form.track.id }}" method="post" role="form"
+                {% if form_for_form.is_multipart %} enctype="multipart/form-data"{% endif %}>
             {% csrf_token %}
             {#        {{ form_for_form.as_p }}#}
             {% for field in form_for_form %}
