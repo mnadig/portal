@@ -94,13 +94,20 @@
             $("form>div>label").addClass("col-sm-3 control-label form-label");
             groupFieldSets();
 
-            $("#awesome").submit(function (e) {
+            function confirmSubmission(e) {
                 e.preventDefault();
                 $("#confirmation-modal").modal({show: true});
-            });
+            };
+
+            $("#awesome").on("submit", confirmSubmission);
 
             $('#form-submit-btn-requiring-confirmation').click(function () {
                 $("#confirmation-modal").modal({show: true});
+            });
+            $('#confirm-submission-btn').click(function () {
+                $('#confirmation-modal').modal('hide');
+                $("#awesome").off("submit", confirmSubmission);
+                $("#awesome").submit();
             });
             $('#terms-check').click(function () {
                 if ($('#terms-check').is(':checked')) {
