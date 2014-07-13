@@ -22,15 +22,6 @@ class ApplicationStatus(enum.Enum):
     APPROVED_PHASE2 = 4
     REJECTED_PHASE2 = 5
 
-    labels = {
-        SUBMITTED_PHASE1: 'Phase 1 Form Submitted',
-        APPROVED_PHASE1: 'APPROVED_PHASE1',
-        REJECTED_PHASE1: "REJECTED_PHASE1",
-        SUBMITTED_PHASE2: "SUBMITTED_PHASE2",
-        APPROVED_PHASE2: "APPROVED_PHASE2",
-        REJECTED_PHASE2: "REJECTED_PHASE2"
-    }
-
     _transitions = {
         APPROVED_PHASE1: (SUBMITTED_PHASE1,),
         REJECTED_PHASE1: (SUBMITTED_PHASE1,),
@@ -38,6 +29,18 @@ class ApplicationStatus(enum.Enum):
         APPROVED_PHASE2: (SUBMITTED_PHASE2,),
         REJECTED_PHASE2: (SUBMITTED_PHASE2,),
     }
+
+    @staticmethod
+    def label(x):
+        labels = [
+            "Phase 1 Form Submitted",
+            "Phase 1 Approved",
+            "Phase 1 Rejected",
+            "Phase 2 Form Submitted",
+            "Phase 2 Approved",
+            "Phase 2 Rejected",
+        ]
+        return labels[x]
 
 
 class Application(models.Model):
@@ -60,3 +63,7 @@ class Application(models.Model):
         if entries.count() > 1:
             return entries[1]
         return None
+
+    def status_label(self):
+        return ApplicationStatus.label(self.status)
+

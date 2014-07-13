@@ -51,7 +51,6 @@ def application(request, track_id):
 
     context['application'] = application
 
-
     # enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/application.html', context)
 

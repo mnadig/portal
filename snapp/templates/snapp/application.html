@@ -2,10 +2,15 @@
 {% block content %}
 
     <div class="application">
-        <h2>"{{ track.name }}" Application</h2>
-
+        <h2>{{ track.name }}</h2>
         {% if not application %}
             <p>Application Status: <b>NEW</b></p>
+        {% else %}
+            <p>Application Status: <b>{{ application.status_label }}</b></p>
+        {% endif %}
+
+
+        {% if not application %}
             <p>To start the application process for the "{{ track.name }}" track, please fill out this <a
                     href="{{ track.form.get_absolute_url }}?track_id={{ track.id }}">entry form</a>.</p>
             We will review your submitted form to decide if your organization's needs can be served by participation in
@@ -16,20 +21,35 @@
             to complete a more detailed form. This will be compared to other applicants and you will again be emailed
             when your application status changes.
         {% elif application.status == 0 %}
-            <p>Application Status: <b>Phase 1 Form Submitted</b></p>
             <p>You have submitted your application entry form for this track. When we have reviewed this form, you
                 will be emailed to notify you of the results. You can also check back here to see your application
                 status.</p>
             <p>You can view your Phase 1 form <a
                     href="/submitted_form_entries/{{ application.phase1_entry.id }}">here</a></p>
         {% elif application.status == 1 %}
-            <p>Application Status: <b>Phase 1 Form Approved</b></p>
-            <p>Congratulations Your entry form has been approved. You may now complete the second and final form for your
-                application <a
-                    href="{{ track.form_phase2.get_absolute_url }}?track_id={{ track.id }}">here</a>. When we have
-            evaluated this second form, you will receive an email notification. You can also check back here.</p>
+            <p>Congratulations Your entry form has been approved.</p>
+            <p>Click <span><a
+                    href="{{ track.form_phase2.get_absolute_url }}?track_id={{ track.id }}">here</a></span> to proceed
+                to the next
+                step of your application. When we have
+                evaluated this second form, you will receive an email notification. You can also check back here.</p>
             <p>You can view your Phase 1 form <a
                     href="/submitted_form_entries/{{ application.phase1_entry.id }}">here</a></p>
+        {% elif application.status == 2 %}
+            <p>We're sorry but we can't approve your phase 1 application right now.</p>
+            <p>application.status_note</p>
+        {% elif application.status == 3 %}
+            <p>Thank you for submitting your phase II application. We will review it and you'll be notified about the
+                result.</p>
+            <p>You can view your Phase 2 form <a
+                    href="/submitted_form_entries/{{ application.phase2_entry.id }}">here</a></p>
+        {% elif application.status == 4 %}
+            <p>Congratulations! Your application has been approved!</p>
+        {% elif application.status == 5 %}
+            <p>We're sorry but we can't approve your application.</p>
+            <p>application.status_note</p>
+        {% else %}
+            <p>Invalid application state. Please contact us at 123-456-7890 for support</p>
         {% endif %}
 
 
