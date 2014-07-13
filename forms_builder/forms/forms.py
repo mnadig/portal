@@ -22,6 +22,9 @@ from forms_builder.forms.utils import now, split_choices
 
 
 #fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
+from snapp.models import Application
+from snapp.models import ApplicationStatus
+
 fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
 ##############################
@@ -237,7 +240,25 @@ class FormForForm(forms.ModelForm):
             else:
                 for field_entry in new_entry_fields:
                     field_entry.save()
+
+        self.update_application_status()
+
         return entry
+
+    def update_application_status(self):
+
+        prior_applications = Application.objects.filter(user_id=self.user, track=self.track)
+
+        if prior_applications.count() == 0:
+            application = Application.objects.create(user=self.user, track=self.track, status=ApplicationStatus.SUBMITTED_PHASE1)
+            application.save()
+        elif prior_applications[0].status == ApplicationStatus.APPROVED_PHASE1:
+            #we should only retrieve 1 row from the database for the above filter query.
+            #but in order to get a handle to the right object, the following FOREACH was needed.
+            for prior_application in prior_applications:
+                prior_application.status = ApplicationStatus.SUBMITTED_PHASE2
+                prior_application.save()
+                break
 
     def email_to(self):
         """
