@@ -20,7 +20,15 @@
                             <div><b>{{ row.label }}</b></div>
                         </div>
                         <div class="col-sm-8">
-                            <div class="answer bg-warning"><p>{{ row.value }}</p></div>
+                            <div class="answer bg-warning">
+                                <p>
+                                {% if row.is_file_type %}
+                                    <a target="_blank" href="{{ row.href }}">{{ row.value }}</a>
+                                {% else %}
+                                    {{ row.value }}
+                                {% endif %}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

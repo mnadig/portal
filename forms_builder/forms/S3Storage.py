@@ -19,3 +19,13 @@ class S3Storage(object):
         content.open()
         key.set_contents_from_file(content)
         return name
+
+    def generate_url(self, key):
+        connection = S3Connection(self.s3_id, self.s3_key)
+        bucket = connection.get_bucket(self.s3_bucket_name)
+
+        k = Key(bucket)
+        k.key = key
+
+        return k.generate_url(expires_in=300)
+

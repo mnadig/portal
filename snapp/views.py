@@ -4,7 +4,10 @@ from forms_builder.forms.models import FormEntry
 from snapp.models import Track
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import user_passes_test
+from forms_builder.forms.S3Storage import S3Storage
+from forms_builder.forms import settings
 
+fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
 
 # Create your views here.
@@ -45,6 +48,12 @@ def submitted_form_entry(request, form_entry_id):
         for field_entry in form_entry.fields.all():
             row = {'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
             fieldset = form_entry.fieldset_for_field(field_entry)
+
+            # Handle file types differently
+            if form_entry.is_file_type(field_entry):
+                row['is_file_type'] = True
+                row['href'] = fs.generate_url(row['value'])
+
             if fieldset is not None:
                 if fieldset not in fieldsets.keys():
                     fieldsets[fieldset] = list()
