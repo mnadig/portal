@@ -1,0 +1,37 @@
+{% extends "snapp/base.html" %}
+{% block content %}
+
+    <div class="application">
+        <h2>"{{ track.name }}" Application</h2>
+
+        {% if not application %}
+            <p>Application Status: <b>NEW</b></p>
+            <p>To start the application process for the "{{ track.name }}" track, please fill out this <a
+                    href="{{ track.form.get_absolute_url }}?track_id={{ track.id }}">entry form</a>.</p>
+            We will review your submitted form to decide if your organization's needs can be served by participation in
+            this track. When your application is processed, you will receive an email with instructions.
+            You can also check back here periodically to view your application status.
+
+            If it is determined that your organization can benefit from participation in this track, you will be asked
+            to complete a more detailed form. This will be compared to other applicants and you will again be emailed
+            when your application status changes.
+        {% elif application.status == 0 %}
+            <p>Application Status: <b>Phase 1 Form Submitted</b></p>
+            <p>You have submitted your application entry form for this track. When we have reviewed this form, you
+                will be emailed to notify you of the results. You can also check back here to see your application
+                status.</p>
+            <p>You can view your Phase 1 form <a
+                    href="/submitted_form_entries/{{ application.phase1_entry.id }}">here</a></p>
+        {% elif application.status == 1 %}
+            <p>Application Status: <b>Phase 1 Form Approved</b></p>
+            <p>Congratulations Your entry form has been approved. You may now complete the second and final form for your
+                application <a
+                    href="{{ track.form_phase2.get_absolute_url }}?track_id={{ track.id }}">here</a>. When we have
+            evaluated this second form, you will receive an email notification. You can also check back here.</p>
+            <p>You can view your Phase 1 form <a
+                    href="/submitted_form_entries/{{ application.phase1_entry.id }}">here</a></p>
+        {% endif %}
+
+
+    </div>
+{% endblock %}
