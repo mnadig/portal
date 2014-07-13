@@ -45,11 +45,14 @@ INSTALLED_APPS = (
 
 # for registration app
 ACCOUNT_ACTIVATION_DAYS=7
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'sifapplications@rootcause.org'
+
+EMAIL_HOST = os.environ.get('ROOTCAUSE_EMAIL_HOST') or 'smtp.gmail.com'
+EMAIL_PORT = os.environ.get('ROOTCAUSE_EMAIL_PORT') or 587
+EMAIL_HOST_USER = os.environ.get('ROOTCAUSE_EMAIL_HOST_USER') or 'sifapplications@rootcause.org'
 EMAIL_HOST_PASSWORD = os.environ.get('ROOTCAUSE_EMAIL_PASSWORD')
 EMAIL_USE_TLS = True
+if os.environ.get('ROOTCAUSE_EMAIL_USE_TLS') == '0':
+    EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'socialinnovationforum@rootcause.org'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
