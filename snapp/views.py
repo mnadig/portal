@@ -3,9 +3,11 @@ from forms_builder.forms.models import Form
 from forms_builder.forms.models import FormEntry
 from snapp.models import Track
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth.decorators import user_passes_test
+import json
 
+from snapp.models import Application, ApplicationStatus
 
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -89,4 +91,38 @@ def form_entries_by_track(request, track_id):
     context = {'user': request.user, 'form_entries': form_entries, 'track_id': track_id}
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
+@login_required
+def approve_application(request, application_id):
 
+    if request.POST:
+        application = Application.objects.get(id=application_id)
+        status_changed_to = None
+
+        if application.status == ApplicationStatus.SUBMITTED_PHASE1:
+            status_changed_to = ApplicationStatus.APPROVED_PHASE1
+        elif application.status == ApplicationStatus.SUBMITTED_PHASE2:
+            status_changed_to = ApplicationStatus.APPROVED_PHASE2
+
+        application.status = status_changed_to
+        application.save()
+
+        context = {'status': status_changed_to}
+        return HttpResponse(json.dumps(context), content_type="application/json")
+
+@login_required
+def reject_application(request, application_id):
+
+    if request.POST:
+        application = Application.objects.get(id=application_id)
+        status_changed_to = None
+
+        if application.status == ApplicationStatus.SUBMITTED_PHASE1:
+            status_changed_to = ApplicationStatus.REJECTED_PHASE1
+        elif application.status == ApplicationStatus.SUBMITTED_PHASE2:
+            status_changed_to = ApplicationStatus.REJECTED_PHASE2
+
+        application.status = status_changed_to
+        application.save()
+
+        context = {'status': status_changed_to}
+        return HttpResponse(json.dumps(context), content_type="application/json")
