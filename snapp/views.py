@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from forms_builder.forms.models import Form
 from forms_builder.forms.models import FormEntry
-from snapp.models import Track
+from snapp.models import Track, Application
 from django.core.exceptions import PermissionDenied
 import json
 
@@ -34,6 +34,28 @@ def index(request):
     return render(request, 'snapp/index.html', context)
 
 
+@login_required
+def application(request, track_id):
+    # application = Application.objects.filter(track_id=track_id, user=request.user)
+    # application = Application.objects.get(track_id=track_id, user=request.user)
+
+    application = None
+
+    prior_applications = Application.objects.filter(user=request.user, track_id=track_id)
+    if prior_applications.count() > 0:
+        application = prior_applications[0]
+        # application.phase1_entry = application.phase1_entry()
+
+    track = Track.objects.get(pk=track_id)
+    context = {'track': track}
+
+    context['application'] = application
+
+
+    # enrich_context_for_application_dropdown(request, context)
+    return render(request, 'snapp/application.html', context)
+
+
 # @user_passes_test(lambda u: u.is_superuser)
 @login_required
 def submitted_form_entry(request, form_entry_id):
@@ -59,6 +81,7 @@ def submitted_form_entry(request, form_entry_id):
     else:
         raise PermissionDenied
 
+
 @login_required
 def evaluation_dashboard(request):
     track_entries = {}
@@ -69,6 +92,17 @@ def evaluation_dashboard(request):
 
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/evaluation_dashboard.html', context)
+
+@login_required
+def admin_application_dashboard(request):
+    track_entries = {}
+    tracks = Track.objects.all()
+
+    for track in tracks:
+        track_entries[track] = Application.objects.filter(track=track)
+
+    context = {'user': request.user, 'track_entries': track_entries}
+    return render(request, 'snapp/admin_application_dashboard.html', context)
 
 
 @login_required
