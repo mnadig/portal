@@ -125,10 +125,10 @@ def form_entries_by_track(request, track_id):
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
 @login_required
-def approve_application(request, application_id):
+def approve_application(request):
 
     if request.POST:
-        application = Application.objects.get(id=application_id)
+        application = Application.objects.get(id=request.POST.get("id"))
         status_changed_to = None
 
         if application.status == ApplicationStatus.SUBMITTED_PHASE1:
@@ -139,14 +139,17 @@ def approve_application(request, application_id):
         application.status = status_changed_to
         application.save()
 
-        context = {'status': status_changed_to}
+        context = {
+            'status': application.status_label()
+            }
         return HttpResponse(json.dumps(context), content_type="application/json")
 
 @login_required
-def reject_application(request, application_id):
+def reject_application(request):
 
     if request.POST:
-        application = Application.objects.get(id=application_id)
+
+        application = Application.objects.get(id=request.POST.get("id"))
         status_changed_to = None
 
         if application.status == ApplicationStatus.SUBMITTED_PHASE1:
@@ -157,5 +160,5 @@ def reject_application(request, application_id):
         application.status = status_changed_to
         application.save()
 
-        context = {'status': status_changed_to}
+        context = {'status': application.status_label()}
         return HttpResponse(json.dumps(context), content_type="application/json")
