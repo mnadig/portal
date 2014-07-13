@@ -228,6 +228,9 @@ class AbstractFormEntry(models.Model):
     def fieldset_for_field(self, field_entry):
         return Field.objects.get(pk=field_entry.field_id).fieldset
 
+    def is_file_type(self, field_entry):
+        return Field.objects.get(pk=field_entry.field_id).field_type == fields.FILE
+
     class Meta:
         verbose_name = _("Form entry")
         verbose_name_plural = _("Form entries")
