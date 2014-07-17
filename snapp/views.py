@@ -174,7 +174,7 @@ def approve_application(request):
 
         context = {
             'status': application.status_label()
-            }
+        }
         return HttpResponse(json.dumps(context), content_type="application/json")
 
 @login_required

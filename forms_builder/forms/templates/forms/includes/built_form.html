@@ -165,6 +165,12 @@
                 {% if form_for_form.is_multipart %} enctype="multipart/form-data"{% endif %}>
             {% csrf_token %}
             {#        {{ form_for_form.as_p }}#}
+
+
+            {% if form_contains_errors  %}
+                <div class="error">Your form has not been submitted. Please correct the errors below.</div>
+            {% endif %}
+
             {% for field in form_for_form %}
                 <div class="form-group">
                     {{ field.errors }}

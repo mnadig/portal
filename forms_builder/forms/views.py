@@ -50,7 +50,9 @@ class FormDetail(TemplateView):
                                     request.FILES or None,
                                     user=request.user or None,
                                     track=Track.objects.get(id=request.GET.get("track_id")) or None)
+        form_contains_errors = None
         if not form_for_form.is_valid():
+            form_contains_errors = True
             form_invalid.send(sender=request, form=form_for_form)
         else:
             # Attachments read must occur before model save,
@@ -64,7 +66,7 @@ class FormDetail(TemplateView):
             self.send_emails(request, form_for_form, form, entry, attachments)
             if not self.request.is_ajax():
                 return redirect("form_sent", slug=form.slug)
-        context = {"form": form, "form_for_form": form_for_form}
+        context = {"form": form, "form_for_form": form_for_form, "form_contains_errors": form_contains_errors}
         return self.render_to_response(context)
 
     def render_to_response(self, context, **kwargs):
