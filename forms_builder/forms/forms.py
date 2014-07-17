@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse
 from django.template import Template
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 
 from forms_builder.forms import fields
 from forms_builder.forms.models import FormEntry, FieldEntry
@@ -22,6 +23,9 @@ from forms_builder.forms.utils import now, split_choices
 
 
 #fs = FileSystemStorage(location=settings.UPLOAD_ROOT)
+from snapp.models import Application
+from snapp.models import ApplicationStatus
+
 fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
 ##############################
@@ -237,7 +241,24 @@ class FormForForm(forms.ModelForm):
             else:
                 for field_entry in new_entry_fields:
                     field_entry.save()
+
+        self.update_application_status()
+
         return entry
+
+    def update_application_status(self):
+
+        try:
+            prior_application = Application.objects.get(user_id=self.user, track=self.track)
+            #if an application exists for the user for a track then that means he has submitted Phase 1 application
+            # and is in the process of submitting a Phase 2 application
+            prior_application.status = ApplicationStatus.SUBMITTED_PHASE2
+            prior_application.save()
+        except ObjectDoesNotExist:
+            # if an application does not exist then
+            # it means that the user is in the process of submitting the Phase 1 application.
+            application = Application.objects.create(user=self.user, track=self.track, status=ApplicationStatus.SUBMITTED_PHASE1)
+            application.save()
 
     def email_to(self):
         """

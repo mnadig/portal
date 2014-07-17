@@ -1,0 +1,261 @@
+{% extends "snapp/base.html" %}
+{% load snapp_tags %}
+
+{% block content %}
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+
+                // using jQuery
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+
+                var csrftoken = getCookie('csrftoken');
+                {#                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {#}
+                {#                    // Send the token to same-origin, relative URLs only.#}
+                {#                    // Send the token only if the method warrants CSRF protection#}
+                {#                    // Using the CSRFToken value acquired earlier#}
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                {#                }#}
+            }
+        });
+
+        $(document).ready(function () {
+
+            $('.rejection').on("click", function () {
+                $("#rejection-confirmation-modal-" + this.dataset.appId).modal({show: true});
+            });
+            $('.approval').on("click", function () {
+                $("#approval-confirmation-modal-" + this.dataset.appId).modal({show: true});
+            });
+
+            $('.approval-submission-btn').on("click", function () {
+                approveApp(this.dataset.appId);
+            })
+
+            $('.rejection-submission-btn').on("click", function () {
+                rejectApp(this.dataset.appId);
+            })
+        });
+
+        function disableButtons(appId) {
+            $("#approv-" + appId).attr("disabled", "disabled");
+            $("#rej-" + appId).attr("disabled", "disabled");
+        }
+
+        function approveApp(appId) {
+            console.log("Approving #" + appId);
+            {#            $("#approval-confirmation-modal-" + appId).find(".modal-body").html("Approving...")#}
+            $.ajax({
+                type: "POST",
+                url: "/approve_application/",
+                data: {id: appId},
+                success: function (data) {
+                    $("#approval-confirmation-modal-" + appId).modal("hide");
+                    $("#app-status-" + appId).text(data['status']);
+                    disableButtons(appId);
+                    console.log("SUCCESS");
+                },
+                error: function (data) {
+                    $("#approval-confirmation-modal-" + appId).modal("hide");
+                    console.log("error");
+                }
+            });
+        }
+
+        function rejectApp(appId) {
+            console.log("Rejecting #" + appId);
+            {#            $("#approval-confirmation-modal-" + appId).find(".modal-body").html("Rejecting...")#}
+
+            $.ajax({
+                type: "POST",
+                url: "/reject_application/",
+                data: {id: appId},
+                success: function (data) {
+                    $("#rejection-confirmation-modal-" + appId).modal("hide");
+                    $("#app-status-" + appId).text(data['status']);
+                    disableButtons(appId);
+                    console.log("SUCCESS");
+                },
+                error: function (data) {
+                    $("#rejection-confirmation-modal-" + appId).modal("hide");
+                    console.log("error");
+                }
+            });
+        }
+    </script>
+
+
+
+    {% if track_entries %}
+        <div class="panel-group" id="accordionTrack1">
+            <div class="spacer"/>
+            {% for track in track_entries.keys %}
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordionTrack{{ track.id }}"
+                               href="#collapseTrack{{ track.id }}">
+                                {{ track.name }} ({{ track.form.title }})
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTrack{{ track.id }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <th>Submitted By</th>
+                                <th>email</th>
+                                <th>Phase 1 Submission Date</th>
+                                <th>Phase 1 Form</th>
+                                <th>Phase 2 Submission Date</th>
+                                <th>Phase 2 Form</th>
+                                <th>Current Status</th>
+                                <th></th>
+                                <th></th>
+                                </thead>
+                                <tbody>
+                                {% for application in track_entries|get_item:track %}
+                                    <tr>
+                                        <td>{{ application.user.username }}</td>
+                                        <td>{{ application.user.email }}</td>
+                                        {% if application.phase1_entry %}
+                                            <td>{{ application.phase1_entry.entry_time }}</td>
+                                            <td>
+                                                <a href="{% url 'submitted_form_entry' application.phase1_entry.id %}"
+                                                   class="btn btn-primary" role="button" target="_blank">View</a>
+                                            </td>
+                                        {% else %}
+                                            <td>-</td>
+                                            <td>-</td>
+                                        {% endif %}
+                                        {% if application.phase2_entry %}
+                                            <td>{{ application.phase2_entry.entry_time }}</td>
+                                            <td>
+                                                <a href="{% url 'submitted_form_entry' application.phase2_entry.id %}"
+                                                   class="btn btn-primary" role="button">View</a>
+                                            </td>
+                                        {% else %}
+                                            <td>-</td>
+                                            <td>-</td>
+                                        {% endif %}
+                                            <td id="app-status-{{ application.id }}">{{ application.status_label }}</td>
+                                        {# Rejection Confirmation modal #}
+                                        <div class="modal fade" id="rejection-confirmation-modal-{{ application.id }}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title">Application Rejection</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>You are about to reject this application. Once rejected, the
+                                                            user will be notified as such
+                                                            you will not be able to change the status again.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">Cancel
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-primary rejection-submission-btn"
+                                                                data-app-id="{{ application.id }}">Confirm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                        <!-- /.modal -->
+                                        <div class="modal fade" id="approval-confirmation-modal-{{ application.id }}">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">&times;</button>
+                                                        <h4 class="modal-title">Application Approval</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>You are about to approve this application. Once approved, the
+                                                            user will be notified as such
+                                                            you will not be able to undo this approval.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">Cancel
+                                                        </button>
+                                                        <button type="button"
+                                                                class="btn btn-primary approval-submission-btn"
+                                                                data-app-id="{{ application.id }}">Confirm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                        <!-- /.modal -->
+
+                                        {% if application.status == 0 or application.status == 3 %}
+                                            <td>
+                                                <button type="button" class="btn btn-success approval"
+                                                        id="approv-{{ application.id }}" role="button"
+                                                        data-app-id="{{ application.id }}">
+                                                    Approve
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger rejection"
+                                                        id="rej-{{ application.id }}" role="button"
+                                                        data-app-id="{{ application.id }}">
+                                                    Reject
+                                                </button>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                <button type="button" class="btn btn-success approval"
+                                                        id="approv-{{ application.id }}"
+                                                        role="button"
+                                                        data-app-id="{{ application.id }}" disabled>
+                                                    Approve
+                                                </button>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-danger rejection"
+                                                        id="approv-{{ application.id }}"
+                                                        role="button"
+                                                        data-app-id="{{ application.id }}" disabled>
+                                                    Reject
+                                                </button>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <strong>There are no form entries requiring evaluation.</strong>
+    {% endif %}
+{% endblock %}
+

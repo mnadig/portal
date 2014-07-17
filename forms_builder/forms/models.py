@@ -222,6 +222,9 @@ class AbstractFormEntry(models.Model):
     track = models.ForeignKey(Track)
     entry_time = models.DateTimeField(_("Date/time"))
 
+    def field_type(self, field_entry):
+        return Field.object.get(pk=field_entry.field_id)
+
     def label_for_field(self, field_entry):
         return Field.objects.get(pk=field_entry.field_id).label
 
