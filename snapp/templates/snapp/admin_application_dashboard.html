@@ -143,7 +143,7 @@
                                             <td>-</td>
                                             <td>-</td>
                                         {% endif %}
-                                        {% if False %}
+                                        {% if application.phase2_entry %}
                                             <td>{{ application.phase2_entry.entry_time }}</td>
                                             <td>
                                                 <a href="{% url 'submitted_form_entry' application.phase2_entry.id %}"

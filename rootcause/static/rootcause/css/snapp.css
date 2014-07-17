@@ -223,3 +223,10 @@ div.faq p {
     text-indent: 50px;
 }
 
+.answer.printable {
+    padding: 1px 5px;
+    margin-bottom: 1px;
+    background-color: #fff3ca;
+    border: 1px solid #e1e1e8;
+    border-radius: 1px;
+}
