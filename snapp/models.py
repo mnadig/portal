@@ -33,12 +33,12 @@ class ApplicationStatus(enum.Enum):
     @staticmethod
     def label(x):
         labels = [
-            "Phase 1 Form Submitted",
-            "Phase 1 Approved",
-            "Phase 1 Rejected",
-            "Phase 2 Form Submitted",
-            "Phase 2 Approved",
-            "Phase 2 Rejected",
+            "First-Round Application Submitted",
+            "First-Round Application Accepted",
+            "First-Round Application Not Advanced",
+            "Second-Round Application Submitted",
+            "Second-Round Application Accepted",
+            "Second-Round Application Not Advanced",
         ]
         return labels[x]
 
