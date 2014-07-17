@@ -1,8 +1,26 @@
-{% extends "snapp/base.html" %}
+<!DOCTYPE html>
+{% load bootstrap3 %}
+{% load staticfiles %}
 {% load snapp_tags %}
+<html>
 
-{% block content %}
-    <h1>{{ form_entry.form.title }}</h1>
+
+<head lang="en">
+    <link rel="stylesheet" href="{% static "rootcause/css/snapp.css" %}" type="text/css"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta charset="UTF-8">
+    <title>Root Cause</title>
+
+</head>
+
+<script>
+
+
+</script>
+<body>
+    <h2>{{ form_entry.form.title }}</h2>
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
@@ -11,7 +29,6 @@
         </div>
 
         {% for fieldset in fieldsets.keys %}
-            <div class="spacer"/>
             <fieldset>
                 <legend class="form-legend">{{ fieldset }}</legend>
                 {% for row in fieldsets|get_item:fieldset %}
@@ -20,7 +37,7 @@
                             <div><b>{{ row.label }}</b></div>
                         </div>
                         <div class="col-sm-8">
-                            <div class="answer bg-warning"><p>{{ row.value }}</p></div>
+                            <div class="answer printable"><p>{{ row.value }}</p></div>
                         </div>
                     </div>
                 {% endfor %}
@@ -32,13 +49,11 @@
                     <div><b>{{ row.label }}</b></div>
                 </div>
                 <div class="col-sm-8">
-                    <div class="answer bg-warning"><p>{{ row.value }}</p></div>
+                    <div class="answer printable"><p>{{ row.value }}</p></div>
                 </div>
             </div>
         {% endfor %}
     </div>
-    <div class="spacer"/>
-    <div>
-        <a href="{% url 'printable_submitted_form_entry' form_entry.id %}" class="btn btn-primary" target="_blank">Link to printable version</a>
-    </div>
-{% endblock %}
+
+</body>
+</html>

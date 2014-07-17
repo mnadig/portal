@@ -80,6 +80,29 @@ def submitted_form_entry(request, form_entry_id):
     else:
         raise PermissionDenied
 
+@login_required
+def printable_submitted_form_entry(request, form_entry_id):
+    form_entry = FormEntry.objects.get(pk=form_entry_id)
+    if request.user.pk == form_entry.user.pk or request.user.is_superuser:
+        rows = []
+        import collections
+
+        fieldsets = collections.OrderedDict()
+
+        for field_entry in form_entry.fields.all():
+            row = {'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
+            fieldset = form_entry.fieldset_for_field(field_entry)
+            if fieldset is not None:
+                if fieldset not in fieldsets.keys():
+                    fieldsets[fieldset] = list()
+                fieldsets[fieldset].append(row)
+            else:
+                rows.append(row)
+        context = {'form_entry': form_entry, 'rows': rows, 'fieldsets': fieldsets}
+
+        return render(request, 'snapp/printable_submitted_form.html', context)
+    else:
+        raise PermissionDenied
 
 @login_required
 def evaluation_dashboard(request):
