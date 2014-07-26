@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from django.contrib import admin
-from snapp.views import index, faq, approve_application, reject_application
+from snapp.views import index, general_faq, impact_entrepreneur_faq, approve_application, reject_application
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -25,7 +25,8 @@ urlpatterns = patterns('',
     url(r'^printable_submitted_form_entry/([0-9]+)', 'snapp.views.printable_submitted_form_entry', name='printable_submitted_form_entry'),
     # url(r'^submitted_form_entries/track([0-9]+)', 'snapp.views.form_entries_by_track', name='form_entries_by_track'),
     url(r'^index/', index, name="index"),
-    url(r'^faq/', faq, name="faq"),
+    url(r'^faq/', general_faq, name="general_faq"),
+    url(r'^impactentrepreneurfaq', impact_entrepreneur_faq, name="impact_entreprenue"),
     url(r'^approve_application/', approve_application, name="approve_application"),
     url(r'^reject_application/', reject_application, name="reject_application"),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
