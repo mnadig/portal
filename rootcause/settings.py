@@ -18,7 +18,7 @@ import os
 SECRET_KEY = 'am1z6gj0qk0wy_q#0@5m7+_dutsd%4kcxv+)xvd3zwy=la+0uw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
