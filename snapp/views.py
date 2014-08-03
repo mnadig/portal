@@ -146,10 +146,15 @@ def evaluation_form(request, form_entry_id):
     return render(request, 'snapp/evaluation_form.html', context)
 
 
-def faq(request):
+def general_faq(request):
     context = {}
     enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/faq.html', context)
+
+def impact_entrepreneur_faq(request):
+    context = {}
+    enrich_context_for_application_dropdown(request, context)
+    return render(request, 'snapp/impactentrepreneurfaq.html', context)
 
 
 def form_entries_by_track(request, track_id):

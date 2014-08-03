@@ -132,7 +132,13 @@
                     <li><a href="/admin">Admin</a>
                 {% endif %}
                 </li>
-                <li><a href="/faq">FAQ</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">FAQ</a>
+                    <ul class="dropdown-menu list-group" role="menu" aria-labelledby="dropdownMenu3">
+                        <li><a href="/faq" role="menuitem" tabindex="-1">General FAQ</a></li>
+                        <li><a href="/impactentrepreneurfaq">Impact Entrepreneur FAQ</a> </li>
+                    </ul>
+                </li>
                 <li><p><span class="alert alert-success fade in"></span></p></li>
             </ul>
         </div>
