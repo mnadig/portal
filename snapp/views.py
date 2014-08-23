@@ -139,6 +139,12 @@ def admin_application_dashboard(request):
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/admin_application_dashboard.html', context)
 
+@login_required
+def evaluations(request, application_id):
+    application = Application.objects.get(pk=application_id)
+    # todo it
+
+
 
 @login_required
 def evaluation_form(request, application_id):
@@ -155,7 +161,12 @@ def evaluation_form(request, application_id):
         rows = []
 
         for field_entry in form_entry.fields.all():
-            row = {'label': form_entry.label_for_field(field_entry), 'value': field_entry.value}
+            row = {
+                'field_entry_id': field_entry.id,
+                'label': form_entry.label_for_field(field_entry),
+                'value': field_entry.value,
+                'evaluator_help_text': form_entry.evaluator_help_text_for_field(field_entry)
+            }
             fieldset = form_entry.fieldset_for_field(field_entry)
 
             # Handle file types differently

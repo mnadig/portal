@@ -166,6 +166,7 @@ class AbstractField(models.Model):
     fieldset = models.CharField(_("Fieldset"), null=True,
         blank=True, max_length=100)
     help_text = models.CharField(_("Help text"), blank=True, max_length=settings.HELPTEXT_MAX_LENGTH)
+    evaluator_help_text = models.CharField(_("Evaluator Help text"), blank=True, max_length=3000)
 
     objects = FieldManager()
 
@@ -213,7 +214,6 @@ class AbstractField(models.Model):
         """
         return self.field_type in args
 
-
 class AbstractFormEntry(models.Model):
     """
     An entry submitted via a user-built form.
@@ -223,7 +223,10 @@ class AbstractFormEntry(models.Model):
     entry_time = models.DateTimeField(_("Date/time"))
 
     def field_type(self, field_entry):
-        return Field.object.get(pk=field_entry.field_id)
+        return Field.objects.get(pk=field_entry.field_id)
+
+    def evaluator_help_text_for_field(self, field_entry):
+        return Field.objects.get(pk=field_entry.field_id).evaluator_help_text
 
     def label_for_field(self, field_entry):
         return Field.objects.get(pk=field_entry.field_id).label

@@ -70,7 +70,6 @@ class Evaluation(models.Model):
     evaluator = models.ForeignKey(User, db_column='evaluator_id')
     application = models.ForeignKey(Application)
 
-
 class EvaluationField(models.Model):
     form_field_entry = models.BigIntegerField()
     evaluation = models.ForeignKey(Evaluation)

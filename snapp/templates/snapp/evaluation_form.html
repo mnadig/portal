@@ -4,48 +4,73 @@
 {% block content %}
     <h1>{{ form_entry.form.title }}</h1>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-12">
-                {{ form_entry.form.description }}
-            </div>
-        </div>
+        <form id="evaluation-form" class="form-horizontal"
+              action="/applications/324/evaluations" method="post" role="form"
+                {#              ?track_id={{ form_for_form.track.id }}#}
+                {% if form_for_form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+            {% csrf_token %}
+            {#        {{ form_for_form.as_p }}#}
 
-        {% for d in data %}
-            {% for fieldset in d.fieldsets.keys %}
-                <div class="spacer"/>
-                <fieldset>
-                    <legend class="form-legend">{{ fieldset }}</legend>
-                    {% for row in d.fieldsets|get_item:fieldset %}
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div><b>{{ row.label }}</b></div>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="answer bg-warning">
-                                    <p>
-                                    {% if row.is_file_type %}
-                                        <a target="_blank" href="{{ row.href }}">{{ row.value }}</a>
-                                    {% else %}
-                                        {{ row.value }}
-                                    {% endif %}
-                                    </p>
+
+            {% if form_contains_errors %}
+                <div class="error">Your form has not been submitted. Please correct the errors below.</div>
+            {% endif %}
+
+
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ form_entry.form.description }}
+                </div>
+            </div>
+
+            {% for d in data %}
+                {% for fieldset in d.fieldsets.keys %}
+                    <div class="spacer"/>
+                    <fieldset>
+                        <legend class="form-legend">{{ fieldset }}</legend>
+                        {% for row in d.fieldsets|get_item:fieldset %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div><b>{{ row.label }}</b></div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="answer bg-warning">
+                                        <p>
+                                            {% if row.is_file_type %}
+                                                <a target="_blank" href="{{ row.href }}">{{ row.value }}</a>
+                                            {% else %}
+                                                {{ row.value }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                            {% if row.evaluator_help_text %}
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <div><b>{{ row.evaluator_help_text }}</b></div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <textarea  rows="10" cols="125" name="{{ row.field_entry_id }}" form="evaluation-form"></textarea>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </fieldset>
+                {% endfor %}
+                {% for row in d.rows %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div><b>{{ row.label }}</b></div>
                         </div>
-                    {% endfor %}
-                </fieldset>
-            {% endfor %}
-            {% for row in d.rows %}
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div><b>{{ row.label }}</b></div>
+                        <div class="col-sm-8">
+                            <div class="answer bg-warning"><p>{{ row.value }}</p></div>
+                        </div>
                     </div>
-                    <div class="col-sm-8">
-                        <div class="answer bg-warning"><p>{{ row.value }}</p></div>
-                    </div>
-                </div>
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
+            <input id='evaluation-submit-btn' type="submit" value="Submit">
+        </form>
     </div>
     <div class="spacer"/>
 {% endblock %}
