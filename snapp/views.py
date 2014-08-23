@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from forms_builder.forms.S3Storage import S3Storage
 from forms_builder.forms import settings
 from django.http import HttpResponse
+from django.http import QueryDict
 import json
 from snapp.models import Application, ApplicationStatus
 
@@ -142,6 +143,18 @@ def admin_application_dashboard(request):
 @login_required
 def evaluations(request, application_id):
     application = Application.objects.get(pk=application_id)
+    input = QueryDict(request.body)
+    eval_field_data = {}
+    for k in input.keys():
+        if k.startswith("comment-"):
+            id = k.split("-")[1]
+            eval_field_data[id].comment=input.k
+        elif k.startswith("score-"):
+            id = k.split("-")[1]
+            eval_field_data[id].score=input.k
+
+    # request.body
+    return render(request, 'snapp/evaluator_thank_you.html')
     # todo it
 
 
@@ -172,7 +185,8 @@ def evaluation_form(request, application_id):
             # Handle file types differently
             if form_entry.is_file_type(field_entry):
                 row['is_file_type'] = True
-                row['href'] = fs.generate_url(row['value'])
+                row['href'] = 'X'
+                #fs.generate_url(row['value'])
 
             if fieldset is not None:
                 if fieldset not in fieldsets.keys():
@@ -181,9 +195,9 @@ def evaluation_form(request, application_id):
             else:
                 rows.append(row)
 
-        data.append({'entry': form_entry, 'rows': rows, 'fieldsets': fieldsets})
+        data.append({'rows': rows, 'fieldsets': fieldsets})
 
-    context = {'data': data}
+    context = {'entry': form_entry, 'application_id': application.id, 'data': data}
     # context = {'data': [{'entry': form_entry, 'rows': rows, 'fieldsets': fieldsets}, {'entry': form_entry, 'rows': rows2, 'fieldsets': fieldsets2}]},
 
 
