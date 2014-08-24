@@ -12,7 +12,6 @@ class Track(models.Model):
     def __unicode__(self):
         return self.name
 
-
 class ApplicationStatus(enum.Enum):
     SUBMITTED_PHASE1 = 0
     APPROVED_PHASE1 = 1
@@ -67,3 +66,12 @@ class Application(models.Model):
     def status_label(self):
         return ApplicationStatus.label(self.status)
 
+class Evaluation(models.Model):
+    evaluator = models.ForeignKey(User, db_column='evaluator_id')
+    application = models.ForeignKey(Application)
+
+class EvaluationField(models.Model):
+    form_field_entry = models.BigIntegerField()
+    evaluation = models.ForeignKey(Evaluation)
+    comment = models.CharField(max_length=1500, blank=True)
+    score = models.IntegerField(blank=True)

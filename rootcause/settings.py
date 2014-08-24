@@ -18,7 +18,7 @@ import os
 SECRET_KEY = 'am1z6gj0qk0wy_q#0@5m7+_dutsd%4kcxv+)xvd3zwy=la+0uw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 
@@ -89,7 +89,7 @@ FORMS_BUILDER_EXTRA_WIDGETS = (
 
 FORMS_BUILDER_FIELD_MAX_LENGTH = 1200
 
-S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME')
+S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME') or 'rootcause'
 S3_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 S3_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 # Database

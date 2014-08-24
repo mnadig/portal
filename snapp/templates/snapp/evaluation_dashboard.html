@@ -9,7 +9,8 @@
                 <div class="panel panel-warning">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordionTrack{{ track.id }}" href="#collapseTrack{{ track.id }}">
+                            <a data-toggle="collapse" data-parent="#accordionTrack{{ track.id }}"
+                               href="#collapseTrack{{ track.id }}">
                                 {{ track.name }} ({{ track.form.title }})
                             </a>
                         </h4>
@@ -21,18 +22,17 @@
                                 <thead>
                                 <th>Submitted By</th>
                                 <th>email</th>
-                                <th>Date Submitted</th>
                                 <th></th>
                                 </thead>
                                 <tbody>
-                                {% for form_entry in track_entries|get_item:track %}
+                                {% for application in track_entries|get_item:track %}
                                     <tr>
-                                        <td>{{ form_entry.user.username }}</td>
-                                        <td>{{ form_entry.user.email }}</td>
-                                        <td>{{ form_entry.entry_time }}</td>
+                                        <td>{{ application.user.username }}</td>
+                                        <td>{{ application.user.email }}</td>
+
+                                        {# todo: show evaluation vs evaluate (or just disable eval button#}
                                         <td>
-{#                                            <button type="button" class="btn btn-primary">View</button>#}
-                                            <a href="{% url 'submitted_form_entry' form_entry.id %}" class="btn btn-primary" role="button">View</a>
+                                            <a class="btn btn-primary" href="/applications/{{ application.id }}/evaluation_form">Evaluate</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -43,112 +43,6 @@
                 </div>
             {% endfor %}
         </div>
-        {#        <br/>#}
-        {#        <div class="panel-group" id="accordionTrack1">#}
-        {#            <div class="panel panel-info">#}
-        {##}
-        {#                <div class="panel-heading">#}
-        {#                    <h4 class="panel-title">#}
-        {#                        <a data-toggle="collapse" data-parent="#accordionTrack1" href="#collapseTrack1">#}
-        {#                            Track 1#}
-        {#                        </a>#}
-        {#                    </h4>#}
-        {#                </div>#}
-        {#                <div id="collapseTrack1" class="panel-collapse collapse in">#}
-        {#                    <div class="panel-body">#}
-        {##}
-        {#                        <table class="table table-hover table-striped">#}
-        {#                            <thead>#}
-        {#                            <th>Form Name</th>#}
-        {#                            <th>Organization</th>#}
-        {#                            <th>Submitted By</th>#}
-        {#                            <th>Date Submitted</th>#}
-        {#                            </thead>#}
-        {#                            <tbody>#}
-        {#                            {% if form_entries %}#}
-        {#                                {% for form_entry in form_entries %}#}
-        {##}
-        {#                                    <tr>#}
-        {#                                        <td>{{ form_entry.form.title }}</td>#}
-        {#                                        <td></td>#}
-        {#                                        <td>{{ form_entry.user.username }}</td>#}
-        {#                                        <td>{{ form_entry.entry_time }}</td>#}
-        {#                                        <td>#}
-        {#                                            <button type="button" class="btn btn-primary">Evaluate!</button>#}
-        {#                                        </td>#}
-        {#                                    </tr>#}
-        {##}
-        {#                                {% endfor %}#}
-        {#                            {% endif %}#}
-        {#                            </tbody>#}
-        {#                        </table>#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
-        {#        <br/>#}
-        {#        <div class="panel-group" id="accordionTrack2">#}
-        {#            <div class="panel panel-info">#}
-        {#                <div class="panel-heading">#}
-        {#                    <h4 class="panel-title">#}
-        {#                        <a data-toggle="collapse" data-parent="#accordionTrack2" href="#collapseTrack2">#}
-        {#                            Track 2#}
-        {#                        </a>#}
-        {#                    </h4>#}
-        {#                </div>#}
-        {#                <div id="collapseTrack2" class="panel-collapse collapse in">#}
-        {#                    <div class="panel-body">#}
-        {#                        <table class="table table-hover table-striped">#}
-        {#                            <thead>#}
-        {#                            <th>Form Name</th>#}
-        {#                            <th>Organization</th>#}
-        {#                            <th>Submitted By</th>#}
-        {#                            <th>Date Submitted</th>#}
-        {#                            </thead>#}
-        {#                            {% for form_entry in form_entries %}#}
-        {#                                <tbody>#}
-        {#                                <tr>#}
-        {#                                    <td>{{ form_entry.form.title }}</td>#}
-        {#                                    <td></td>#}
-        {#                                    <td>{{ form_entry.user.username }}</td>#}
-        {#                                    <td>{{ form_entry.entry_time }}</td>#}
-        {#                                    <td>#}
-        {#                                        <button type="button" class="btn btn-primary">Evaluate!</button>#}
-        {#                                    </td>#}
-        {#                                </tr>#}
-        {#                                </tbody>#}
-        {#                            {% endfor %}#}
-        {#                        </table>#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </div>#}
-        {#        </div>#}
-        {#        <br/>#}
-        {#        <div class="panel panel-info">#}
-        {#            <div class="panel-heading">Track 3</div>#}
-        {#            <table class="table table-hover table-striped">#}
-        {#                <thead>#}
-        {#                <th>Form Name</th>#}
-        {#                <th>Organization</th>#}
-        {#                <th>Submitted By</th>#}
-        {#                <th>Date Submitted</th>#}
-        {#                <th></th>#}
-        {#                </thead>#}
-        {#                {% for form_entry in form_entries %}#}
-        {#                    <tbody>#}
-        {#                    <tr>#}
-        {#                        <td>{{ form_entry.form.title }}</td>#}
-        {#                        <td></td>#}
-        {#                        <td>{{ form_entry.user.username }}</td>#}
-        {#                        <td>{{ form_entry.entry_time }}</td>#}
-        {#                        <td>#}
-        {#                            <button type="button" class="btn btn-primary">Evaluate!</button>#}
-        {#                        </td>#}
-        {#                    </tr>#}
-        {#                    </tbody>#}
-        {#                {% endfor %}#}
-        {#            </table>#}
-        {#        </div>#}
     {% else %}
         <strong>There are no form entries requiring evaluation.</strong>
     {% endif %}

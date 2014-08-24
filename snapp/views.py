@@ -1,13 +1,14 @@
 from django.shortcuts import render
-from forms_builder.forms.models import Form
-from forms_builder.forms.models import FormEntry
+from forms_builder.forms.models import Form, FormEntry, FieldEntry
 from snapp.models import Track
 from django.core.exceptions import PermissionDenied
 from forms_builder.forms.S3Storage import S3Storage
 from forms_builder.forms import settings
 from django.http import HttpResponse
+from django.http import QueryDict
+from django.db import transaction
 import json
-from snapp.models import Application, ApplicationStatus
+from snapp.models import Application, ApplicationStatus, Evaluation, EvaluationField
 
 fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
@@ -90,6 +91,7 @@ def submitted_form_entry(request, form_entry_id):
     else:
         raise PermissionDenied
 
+
 @login_required
 def printable_submitted_form_entry(request, form_entry_id):
     form_entry = FormEntry.objects.get(pk=form_entry_id)
@@ -114,13 +116,14 @@ def printable_submitted_form_entry(request, form_entry_id):
     else:
         raise PermissionDenied
 
+
 @login_required
 def evaluation_dashboard(request):
     track_entries = {}
     tracks = Track.objects.all()
 
     for track in tracks:
-        track_entries[track] = FormEntry.objects.filter(track=track)
+        track_entries[track] = Application.objects.filter(track=track)
 
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/evaluation_dashboard.html', context)
@@ -138,10 +141,85 @@ def admin_application_dashboard(request):
 
 
 @login_required
-def evaluation_form(request, form_entry_id):
-    form_entry = FormEntry.objects.get(pk=form_entry_id)
+@transaction.atomic
+def evaluations(request, application_id):
+    application = Application.objects.get(pk=application_id)
+    evaluator = request.user
+    evaluation = Evaluation(evaluator=evaluator, application=application)
+    evaluation.save()  # barf
 
-    context = {'form_entry': form_entry}
+    input = QueryDict(request.body)
+    # todo: logic here should probably be in a Django Form model. Current form submitted is custom and could probably be
+    # standardized
+    eval_field_data = {}
+    for k in input.keys():
+        if k.startswith("comment-"):
+            id = k.split("-")[1]
+            if (id not in eval_field_data):
+                eval_field_data[id] = {}
+            eval_field_data[id]['comment'] = input[k]
+        elif k.startswith("score-"):
+            id = k.split("-")[1]
+            if (id not in eval_field_data):
+                eval_field_data[id] = {}
+            eval_field_data[id]['score'] = input[k]
+
+    for form_field_id in eval_field_data.keys():
+        _id = int(form_field_id)
+        form_field_entry = FieldEntry.objects.get(pk=_id)
+        comment = eval_field_data[form_field_id]['comment']
+        if eval_field_data[form_field_id]['score']:
+            score = int(eval_field_data[form_field_id]['score'])
+        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=int(form_field_id), comment=comment,
+                                     score=score)
+        eval_field.save()
+
+    # request.body
+    return render(request, 'snapp/evaluator_thank_you.html')
+    # todo it
+
+
+@login_required
+def evaluation_form(request, application_id):
+    application = Application.objects.get(pk=application_id)
+    # form_entry = FormEntry.objects.get(pk=form_entry_id)
+    # if request.user.pk == form_entry.user.pk or request.user.is_superuser:
+
+    import collections
+
+    data = []
+
+    for form_entry in [application.phase1_entry(), application.phase2_entry()]:
+        fieldsets = collections.OrderedDict()
+        rows = []
+
+        for field_entry in form_entry.fields.all():
+            row = {
+                'field_entry_id': field_entry.id,
+                'label': form_entry.label_for_field(field_entry),
+                'value': field_entry.value,
+                'evaluator_help_text': form_entry.evaluator_help_text_for_field(field_entry)
+            }
+            fieldset = form_entry.fieldset_for_field(field_entry)
+
+            # Handle file types differently
+            if form_entry.is_file_type(field_entry):
+                row['is_file_type'] = True
+                row['href'] = 'X'
+                # fs.generate_url(row['value'])
+
+            if fieldset is not None:
+                if fieldset not in fieldsets.keys():
+                    fieldsets[fieldset] = list()
+                fieldsets[fieldset].append(row)
+            else:
+                rows.append(row)
+
+        data.append({'rows': rows, 'fieldsets': fieldsets})
+
+    context = {'entry': form_entry, 'application_id': application.id, 'data': data}
+    # context = {'data': [{'entry': form_entry, 'rows': rows, 'fieldsets': fieldsets}, {'entry': form_entry, 'rows': rows2, 'fieldsets': fieldsets2}]},
+
 
     return render(request, 'snapp/evaluation_form.html', context)
 
@@ -150,6 +228,7 @@ def general_faq(request):
     context = {}
     enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/faq.html', context)
+
 
 def impact_entrepreneur_faq(request):
     context = {}
@@ -162,9 +241,9 @@ def form_entries_by_track(request, track_id):
     context = {'user': request.user, 'form_entries': form_entries, 'track_id': track_id}
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
+
 @login_required
 def approve_application(request):
-
     if request.POST:
         application = Application.objects.get(id=request.POST.get("id"))
         status_changed_to = None
@@ -182,9 +261,9 @@ def approve_application(request):
         }
         return HttpResponse(json.dumps(context), content_type="application/json")
 
+
 @login_required
 def reject_application(request):
-
     if request.POST:
 
         application = Application.objects.get(id=request.POST.get("id"))
