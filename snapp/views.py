@@ -1,14 +1,14 @@
 from django.shortcuts import render
-from forms_builder.forms.models import Form
-from forms_builder.forms.models import FormEntry
+from forms_builder.forms.models import Form, FormEntry, FieldEntry
 from snapp.models import Track
 from django.core.exceptions import PermissionDenied
 from forms_builder.forms.S3Storage import S3Storage
 from forms_builder.forms import settings
 from django.http import HttpResponse
 from django.http import QueryDict
+from django.db import transaction
 import json
-from snapp.models import Application, ApplicationStatus
+from snapp.models import Application, ApplicationStatus, Evaluation, EvaluationField
 
 fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
@@ -140,23 +140,44 @@ def admin_application_dashboard(request):
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/admin_application_dashboard.html', context)
 
+
 @login_required
+@transaction.atomic
 def evaluations(request, application_id):
     application = Application.objects.get(pk=application_id)
+    evaluator = request.user
+    evaluation = Evaluation(evaluator=evaluator, application=application)
+    evaluation.save()  # barf
+
     input = QueryDict(request.body)
+    # todo: logic here should probably be in a Django Form model. Current form submitted is custom and could probably be
+    # standardized
     eval_field_data = {}
     for k in input.keys():
         if k.startswith("comment-"):
             id = k.split("-")[1]
-            eval_field_data[id].comment=input.k
+            if (id not in eval_field_data):
+                eval_field_data[id] = {}
+            eval_field_data[id]['comment'] = input[k]
         elif k.startswith("score-"):
             id = k.split("-")[1]
-            eval_field_data[id].score=input.k
+            if (id not in eval_field_data):
+                eval_field_data[id] = {}
+            eval_field_data[id]['score'] = input[k]
+
+    for form_field_id in eval_field_data.keys():
+        _id = int(form_field_id)
+        form_field_entry = FieldEntry.objects.get(pk=_id)
+        comment = eval_field_data[form_field_id]['comment']
+        if eval_field_data[form_field_id]['score']:
+            score = int(eval_field_data[form_field_id]['score'])
+        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=int(form_field_id), comment=comment,
+                                     score=score)
+        eval_field.save()
 
     # request.body
     return render(request, 'snapp/evaluator_thank_you.html')
     # todo it
-
 
 
 @login_required
@@ -186,7 +207,7 @@ def evaluation_form(request, application_id):
             if form_entry.is_file_type(field_entry):
                 row['is_file_type'] = True
                 row['href'] = 'X'
-                #fs.generate_url(row['value'])
+                # fs.generate_url(row['value'])
 
             if fieldset is not None:
                 if fieldset not in fieldsets.keys():
