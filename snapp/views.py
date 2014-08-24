@@ -122,8 +122,9 @@ def evaluation_dashboard(request):
     track_entries = {}
     tracks = Track.objects.all()
 
+    # todo: when variable-phase applications are fully supported this will need update
     for track in tracks:
-        track_entries[track] = Application.objects.filter(track=track)
+        track_entries[track] = Application.objects.filter(track=track, status=ApplicationStatus.APPROVED_PHASE2)
 
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/evaluation_dashboard.html', context)
@@ -205,8 +206,7 @@ def evaluation_form(request, application_id):
             # Handle file types differently
             if form_entry.is_file_type(field_entry):
                 row['is_file_type'] = True
-                row['href'] = 'X'
-                # fs.generate_url(row['value'])
+                row['href'] = fs.generate_url(row['value'])
 
             if fieldset is not None:
                 if fieldset not in fieldsets.keys():
