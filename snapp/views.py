@@ -18,6 +18,8 @@ fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
 from django.contrib.auth.decorators import login_required
 
+def _is_evaluator(request):
+    return request.user.has_perm('snapp.add_evaluation')
 
 def enrich_context_for_application_dropdown(request, context):
     forms = Form.objects.all()
@@ -34,7 +36,8 @@ def enrich_context_for_application_dropdown(request, context):
 
 
 def index(request):
-    context = {}
+    isEvaluator = request.user.has_perm('snapp.add_evaluation')
+    context = {'isEvaluator': isEvaluator}
     enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/index.html', context)
 
@@ -126,7 +129,11 @@ def evaluation_dashboard(request):
     for track in tracks:
         track_entries[track] = Application.objects.filter(track=track, status=ApplicationStatus.APPROVED_PHASE2)
 
+    # print request.user.get_all_permissions()
     context = {'user': request.user, 'track_entries': track_entries}
+    if not _is_evaluator(request):
+        return render(request, 'snapp/index.html', context)
+
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
 @login_required
@@ -179,9 +186,12 @@ def evaluations(request, application_id):
     return render(request, 'snapp/evaluator_thank_you.html')
     # todo it
 
-
 @login_required
 def evaluation_form(request, application_id):
+    context = {}
+    if not _is_evaluator(request):
+        return render(request, 'snapp/index.html', context)
+
     application = Application.objects.get(pk=application_id)
     # form_entry = FormEntry.objects.get(pk=form_entry_id)
     # if request.user.pk == form_entry.user.pk or request.user.is_superuser:

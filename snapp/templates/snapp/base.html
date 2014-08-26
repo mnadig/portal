@@ -101,7 +101,7 @@
                             </ul>
                         </li>
                     {% endif %}
-                    {% if tracks and user.is_superuser %}
+                    {% if tracks and isEvaluator %}
                         <li><a href="/evaluation_dashboard">Evaluation Dashboard</a></li>
                     {% endif %}
 
