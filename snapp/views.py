@@ -127,7 +127,7 @@ def evaluation_dashboard(request):
 
     # todo: when variable-phase applications are fully supported this will need update
     for track in tracks:
-        track_entries[track] = Application.objects.filter(track=track, status=ApplicationStatus.APPROVED_PHASE2)
+        track_entries[track] = Application.objects.filter(track=track, status=ApplicationStatus.SUBMITTED_PHASE2)
 
     # print request.user.get_all_permissions()
     context = {'user': request.user, 'track_entries': track_entries}
