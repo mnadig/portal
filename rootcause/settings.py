@@ -92,6 +92,8 @@ FORMS_BUILDER_FIELD_MAX_LENGTH = 1200
 S3_BUCKET_NAME = os.environ.get('S3_BUCKET_NAME') or 'rootcause'
 S3_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 S3_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_QUERYSTRING_EXPIRE = 63115200
+
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
