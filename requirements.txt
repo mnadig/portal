@@ -19,6 +19,7 @@ pystache==0.5.4
 static==1.0.2
 django-enumfield==1.1
 six==1.7.3
+newrelic==2.28.0.26
 
 # captcha
 django-recaptcha==1.0
