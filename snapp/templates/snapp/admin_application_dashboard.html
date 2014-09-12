@@ -111,6 +111,8 @@
                                href="#collapseTrack{{ track.id }}">
                                 {{ track.name }}
                             </a>
+                            <a href="{% url 'admin_evaluation_dashboard' track.id %}"
+                               class="btn btn-default" role="button">View evaluations</a>
                         </h4>
                     </div>
                     <div id="collapseTrack{{ track.id }}" class="panel-collapse collapse">
