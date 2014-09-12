@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^$', 'snapp.views.index', name='index'), # todo: change to include all from snapp
     url(r'^admin_application_dashboard/', 'snapp.views.admin_application_dashboard', name='admin_application_dashboard'),
+    url(r'^admin_evaluation_dashboard/([0-9]+)', 'snapp.views.admin_evaluation_dashboard', name='admin_evaluation_dashboard'),
     url(r'^evaluation_dashboard/', 'snapp.views.evaluation_dashboard', name='evaluation_dashboard'),
     url(r'^applications/([0-9]+)/evaluation_form','snapp.views.evaluation_form', name='evaluation_form'),
     url(r'^applications/([0-9]+)/evaluations','snapp.views.evaluations', name='evaluations'),        # TODO url for posting a submition of an evaluation

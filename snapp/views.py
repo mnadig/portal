@@ -136,6 +136,20 @@ def evaluation_dashboard(request):
 
     return render(request, 'snapp/evaluation_dashboard.html', context)
 
+
+@login_required
+def admin_evaluation_dashboard(request, track_id):
+    track_entries = {}
+    tracks = Track.objects.all()
+
+    for track in tracks:
+        track_entries[track] = Application.objects.filter(track=track, status=ApplicationStatus.APPROVED_PHASE2)
+    # track_entries.get(track_entries.keys()[0])[0].evaluation_set
+
+    context = {'user': request.user, 'track_entries': track_entries}
+    return render(request, 'snapp/admin_evaluation_dashboard.html', context)
+
+
 @login_required
 def admin_application_dashboard(request):
     track_entries = {}

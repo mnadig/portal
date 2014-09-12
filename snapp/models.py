@@ -9,6 +9,16 @@ class Track(models.Model):
     form = models.ForeignKey("forms.Form", related_name='Phase 1 Form', verbose_name='Phase 1 Form')
     form_phase2 = models.ForeignKey("forms.Form", related_name='Phase 2 Form', verbose_name='Phase 2 Form')
 
+    def evaluatable_fields(self):
+        result = []
+        for field in self.form.fields.all():
+            if field.evaluator_help_text is not None:
+                result.append(field)
+        for field in self.form_phase2.fields.all():
+            if field.evaluator_help_text is not None:
+                result.append(field)
+        return result
+
     def __unicode__(self):
         return self.name
 
@@ -47,6 +57,12 @@ class Application(models.Model):
     track = models.ForeignKey(Track)
     status = enum.EnumField(ApplicationStatus)
 
+    # def phase1_form(self):
+    # return self.track.form
+    #
+    # def phase2_form(self):
+    #     return self.track.form_phase2
+
     def phase1_entry(self):
         from forms_builder.forms.models import FormEntry
 
@@ -66,9 +82,11 @@ class Application(models.Model):
     def status_label(self):
         return ApplicationStatus.label(self.status)
 
+
 class Evaluation(models.Model):
     evaluator = models.ForeignKey(User, db_column='evaluator_id')
     application = models.ForeignKey(Application)
+
 
 class EvaluationField(models.Model):
     form_field_entry = models.BigIntegerField()
