@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.http import QueryDict
 from django.db import transaction
 import json
+import numpy
 from snapp.models import Application, ApplicationStatus, Evaluation, EvaluationField
 
 fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
@@ -140,13 +141,35 @@ def evaluation_dashboard(request):
 @login_required
 def admin_evaluation_dashboard(request, track_id):
     track_entries = {}
-    tracks = Track.objects.all()
+    track = Track.objects.get(pk=track_id)
+    application_scores = []
+    applications = Application.objects.filter(track=track, status=ApplicationStatus.SUBMITTED_PHASE2)
+    for app in applications:
+        evaluations = Evaluation.objects.filter(application=app)
+        field_scores = []
+        for evaluable_field in track.evaluatable_fields():
+            res = {'evaluable_field': evaluable_field,
+                   # 'scores': ()
+            }
+            for eval in evaluations:
+                scores = []
+                eval_fields = eval.evaluationfield_set #EvaluationField.objects.filter()
+                for eval_field in eval_fields.all():
+                    if eval_field.form_field_entry.field_id == evaluable_field.id:
+                        scores.append(eval_field.score)
+            res['avg_score'] = numpy.mean(scores)
+            field_scores.append(res)
+        application_scores.append({
+            'application': app,
+            'field_scores': field_scores
+        })
+        #  =
 
-    for track in tracks:
-        track_entries[track] = Application.objects.filter(track=track, status=ApplicationStatus.APPROVED_PHASE2)
+
+
     # track_entries.get(track_entries.keys()[0])[0].evaluation_set
 
-    context = {'user': request.user, 'track_entries': track_entries}
+    context = {'user': request.user, 'application_scores': application_scores, 'track': track}
     return render(request, 'snapp/admin_evaluation_dashboard.html', context)
 
 
@@ -199,6 +222,7 @@ def evaluations(request, application_id):
     # request.body
     return render(request, 'snapp/evaluator_thank_you.html')
     # todo it
+
 
 @login_required
 def evaluation_form(request, application_id):

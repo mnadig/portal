@@ -37,7 +37,7 @@ class ApplicationStatus(enum.Enum):
         SUBMITTED_PHASE2: (APPROVED_PHASE1,),
         APPROVED_PHASE2: (SUBMITTED_PHASE2,),
         REJECTED_PHASE2: (SUBMITTED_PHASE2,),
-    }
+        }
 
     @staticmethod
     def label(x):
@@ -48,7 +48,7 @@ class ApplicationStatus(enum.Enum):
             "Second-Round Application Submitted",
             "Second-Round Application Accepted",
             "Second-Round Application Not Advanced",
-        ]
+            ]
         return labels[x]
 
 
@@ -83,13 +83,14 @@ class Application(models.Model):
         return ApplicationStatus.label(self.status)
 
 
+
 class Evaluation(models.Model):
     evaluator = models.ForeignKey(User, db_column='evaluator_id')
     application = models.ForeignKey(Application)
 
 
 class EvaluationField(models.Model):
-    form_field_entry = models.BigIntegerField()
+    form_field_entry = models.ForeignKey("forms.FieldEntry", db_column="form_field_entry")
     evaluation = models.ForeignKey(Evaluation)
     comment = models.CharField(max_length=1500, blank=True)
     score = models.IntegerField(blank=True)
