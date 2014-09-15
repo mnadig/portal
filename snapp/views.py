@@ -63,6 +63,16 @@ def application(request, track_id):
     # enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/application.html', context)
 
+@login_required
+def view_evaluations(request, app_id):
+    evaluations = Evaluation.objects.filter(application_id=app_id)
+    print "appid is : " + str(app_id)
+    for e in evaluations:
+        print e.evaluator
+        print e.application.user
+    context = {'application_id': app_id, 'evaluations': evaluations}
+    return render(request, 'snapp/evaluations.html', context)
+
 
 # @user_passes_test(lambda u: u.is_superuser)
 @login_required

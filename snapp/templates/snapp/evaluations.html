@@ -1,0 +1,12 @@
+{% extends "snapp/base.html" %}
+{% block content %}
+
+    Application ID : {{ application_id }}
+
+    {% for evaluation in evaluations %}
+        <pre>{{ evaluation.evaluator }}</pre>
+        <pre>{{ evaluation.application.user }}</pre>
+    {% endfor %}
+
+
+{% endblock %}
