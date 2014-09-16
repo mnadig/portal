@@ -12,10 +12,10 @@ class Track(models.Model):
     def evaluatable_fields(self):
         result = []
         for field in self.form.fields.all():
-            if field.evaluator_help_text is not None:
+            if field.evaluator_help_text:
                 result.append(field)
         for field in self.form_phase2.fields.all():
-            if field.evaluator_help_text is not None:
+            if field.evaluator_help_text:
                 result.append(field)
         return result
 

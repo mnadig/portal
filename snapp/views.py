@@ -161,17 +161,27 @@ def admin_evaluation_dashboard(request, track_id):
             res = {'evaluable_field': evaluable_field,
                    # 'scores': ()
             }
+            app_scores = []
+            scores = []
             for eval in evaluations:
                 scores = []
                 eval_fields = eval.evaluationfield_set #EvaluationField.objects.filter()
                 for eval_field in eval_fields.all():
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
                         scores.append(eval_field.score)
-            res['avg_score'] = numpy.mean(scores)
+            if len(scores) > 0:
+                avg_score_for_field = numpy.mean(scores)
+                res['avg_score'] = numpy.mean(avg_score_for_field)
+                app_scores.append(avg_score_for_field)
+            else:
+                res['avg_score'] = "N/A"
             field_scores.append(res)
+            app_score = numpy.mean(app_scores)
         application_scores.append({
             'application': app,
-            'field_scores': field_scores
+            'field_scores': field_scores,
+            'app_score': app_score,
+            'num_evals': len(evaluations)
         })
         #  =
 
