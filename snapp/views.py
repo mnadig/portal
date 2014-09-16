@@ -158,13 +158,14 @@ def admin_evaluation_dashboard(request, track_id):
         evaluations = Evaluation.objects.filter(application=app)
         field_scores = []
         app_scores = []
+        app_score = None
         for evaluable_field in track.evaluatable_fields():
             res = {'evaluable_field': evaluable_field,
                    # 'scores': ()
             }
             scores = []
             for eval in evaluations:
-                scores = []
+                # scores = []
                 eval_fields = eval.evaluationfield_set #EvaluationField.objects.filter()
                 for eval_field in eval_fields.all():
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
