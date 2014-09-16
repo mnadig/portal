@@ -15,18 +15,18 @@
                 {#                            </a>#}
                 {#                        </h4>#}
                 {#                    </div>#}
-                <h1>{{ track.name }}</h1>
+                <h3>Evaluation Dashboard, Track: <i>{{ track.name }}</i></h3>
 
-                <div id="collapseTrack{{ track.id }}" class="panel-collapse222 collapse222">
-                    <div class="panel-body222">
+                <div id="collapseTrack{{ track.id }}">
+                    <div>
 
                         <table class="table table-hover table-striped">
                             <thead>
-                            <tr>
-                                <th colspan="4"/>
-                                <th colspan="{{ track.evaluatable_fields}}">Average Scores Per Question</th>
-                                <th colspan="1"/>
-                            </tr>
+{#                            <tr>#}
+{#                                <th colspan="4"/>#}
+{#                                <th colspan="{{ track.evaluatable_fields|length }}">Average Scores Per Question</th>#}
+{#                                <th colspan="1"/>#}
+{#                            </tr>#}
                             <tr>
 
                                 <th>Submitted By</th>
@@ -34,7 +34,7 @@
                                 <th>Average Score</th>
                                 <th># Evaluations</th>
                                 {% for field in track.evaluatable_fields %}
-                                    <th>{{ field.label }}</th>
+                                    <th>{{ field.evaluator_help_text }}</th>
                                 {% endfor %}
                                 <th>Evaluations</th>
                             </tr>
@@ -45,15 +45,23 @@
 
                                     <td>{{ app_score.application.user.username }}</td>
                                     <td>{{ app_score.application.user.email }}</td>
-                                    <td>{{ app_score.app_score }}</td>
+                                    {% if field_score.app_score == None %}
+                                        <td>N/A</td>
+                                    {% else %}
+                                        <td>{{ field_score.app_score }}</td>
+                                    {% endif %}
                                     <td>{{ app_score.num_evals }}</td>
                                     {# Assumed that these are ordered as track.evaluatable_fields #}
                                     {% for field_score in app_score.field_scores %}
-{#                                        {{ field_score.evaluable_field.label }}#}
-                                        <td>{{ field_score.avg_score }}</td>
+                                        {#                                        {{ field_score.evaluable_field.label }}#}
+                                        {% if field_score.avg_score == None %}
+                                            <td>N/A</td>
+                                        {% else %}
+                                            <td>{{ field_score.avg_score }}</td>
+                                        {% endif %}
                                     {% endfor %}
                                     <td>
-{#                                        {% url 'application_evaluations' app_score.application.id %}#}
+                                        {#                                        {% url 'application_evaluations' app_score.application.id %}#}
                                         <a href="/dunnoyet/{app_score.application.id}"
                                            class="btn btn-primary" role="button">View</a>
                                     </td>
