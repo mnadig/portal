@@ -36,7 +36,7 @@
                                     {% if app_score.app_score == None %}
                                         <td>N/A</td>
                                     {% else %}
-                                        <td>{{ app_score.app_score|floatformat:2}}</td>
+                                        <td>{{ app_score.app_score|floatformat:2 }}</td>
                                     {% endif %}
                                     <td>{{ app_score.num_evals }}</td>
                                     {# Assumed that these are ordered as track.evaluatable_fields #}
@@ -45,12 +45,11 @@
                                         {% if field_score.avg_score == None %}
                                             <td>N/A</td>
                                         {% else %}
-                                            <td>{{ field_score.avg_score|floatformat:2}}</td>
+                                            <td>{{ field_score.avg_score|floatformat:2 }}</td>
                                         {% endif %}
                                     {% endfor %}
                                     <td>
-                                        {#                                        {% url 'application_evaluations' app_score.application.id %}#}
-                                        <a href="/dunnoyet/{app_score.application.id}"
+                                        <a href="{% url 'view_evaluations' app_score.application.id %}" target="_blank"
                                            class="btn btn-primary" role="button">View</a>
                                     </td>
                                 </tr>

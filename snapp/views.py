@@ -19,8 +19,10 @@ fs = S3Storage(settings.S3_BUCKET_NAME, settings.S3_ID, settings.S3_KEY)
 
 from django.contrib.auth.decorators import login_required
 
+
 def _is_evaluator(request):
     return request.user.has_perm('snapp.add_evaluation')
+
 
 def enrich_context_for_application_dropdown(request, context):
     forms = Form.objects.all()
@@ -63,14 +65,26 @@ def application(request, track_id):
     # enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/application.html', context)
 
+
 @login_required
 def view_evaluations(request, app_id):
     evaluations = Evaluation.objects.filter(application_id=app_id)
-    print "appid is : " + str(app_id)
-    for e in evaluations:
-        print e.evaluator
-        print e.application.user
-    context = {'application_id': app_id, 'evaluations': evaluations}
+
+    application = Application.objects.get(pk=app_id)
+    track_id = application.track_id
+
+    track = Track.objects.get(pk=track_id)
+    evaluation_data = []
+    for eval in evaluations:
+        eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
+        eval_fields_list = []
+        for evaluable_field in track.evaluatable_fields():
+            for eval_field in eval_fields.all():
+                if eval_field.form_field_entry.field_id == evaluable_field.id:
+                    eval_fields_list.append(eval_field)
+        evaluation_data.append({'evaluator': eval.evaluator, 'eval_fields_list': eval_fields_list})
+
+    context = {'application': application, 'track': track, 'evaluation_data': evaluation_data}
     return render(request, 'snapp/evaluations.html', context)
 
 
@@ -166,7 +180,7 @@ def admin_evaluation_dashboard(request, track_id):
             scores = []
             for eval in evaluations:
                 # scores = []
-                eval_fields = eval.evaluationfield_set #EvaluationField.objects.filter()
+                eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
                 for eval_field in eval_fields.all():
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
                         scores.append(eval_field.score)
@@ -231,12 +245,11 @@ def evaluations(request, application_id):
             eval_field_data[id]['score'] = input[k]
 
     for form_field_id in eval_field_data.keys():
-        _id = int(form_field_id)
-        form_field_entry = FieldEntry.objects.get(pk=_id)
+        _id = FieldEntry.objects.get(pk=int(form_field_id))
         comment = eval_field_data[form_field_id]['comment']
         if eval_field_data[form_field_id]['score']:
             score = int(eval_field_data[form_field_id]['score'])
-        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=int(form_field_id), comment=comment,
+        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=_id, comment=comment,
                                      score=score)
         eval_field.save()
 
@@ -292,17 +305,18 @@ def evaluation_form(request, application_id):
 
     return render(request, 'snapp/evaluation_form.html', context)
 
-def sort_applications_by_score(application_list):
 
+def sort_applications_by_score(application_list):
     length = len(application_list) - 1
     sorted = False
 
     while not sorted:
         sorted = True
         for i in range(length):
-            if application_list[i]['app_score'] < application_list[i+1]['app_score']:
+            if application_list[i]['app_score'] < application_list[i + 1]['app_score']:
                 sorted = False
-                application_list[i], application_list[i+1] = application_list[i+1], application_list[i]
+                application_list[i], application_list[i + 1] = application_list[i + 1], application_list[i]
+
 
 def general_faq(request):
     context = {}
