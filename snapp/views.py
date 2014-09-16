@@ -235,12 +235,11 @@ def evaluations(request, application_id):
             eval_field_data[id]['score'] = input[k]
 
     for form_field_id in eval_field_data.keys():
-        _id = int(form_field_id)
-        form_field_entry = FieldEntry.objects.get(pk=_id)
+        _id = FieldEntry.objects.get(pk=int(form_field_id))
         comment = eval_field_data[form_field_id]['comment']
         if eval_field_data[form_field_id]['score']:
             score = int(eval_field_data[form_field_id]['score'])
-        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=int(form_field_id), comment=comment,
+        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=_id, comment=comment,
                                      score=score)
         eval_field.save()
 
