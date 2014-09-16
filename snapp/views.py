@@ -63,14 +63,47 @@ def application(request, track_id):
     # enrich_context_for_application_dropdown(request, context)
     return render(request, 'snapp/application.html', context)
 
+
 @login_required
 def view_evaluations(request, app_id):
     evaluations = Evaluation.objects.filter(application_id=app_id)
-    print "appid is : " + str(app_id)
-    for e in evaluations:
-        print e.evaluator
-        print e.application.user
-    context = {'application_id': app_id, 'evaluations': evaluations}
+    print "Appid is : " + str(app_id)
+
+    application = Application.objects.filter(id=app_id)
+    track_id = application[0].track_id
+    print "Track = " + str(track_id)
+
+
+    track = Track.objects.get(pk=track_id)
+    for evaluable_field in track.evaluatable_fields():
+        for eval in evaluations:
+            eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
+            eval_fields_list = []
+            for eval_field in eval_fields.all():
+                if eval_field.form_field_entry.field_id == evaluable_field.id:
+                    eval_fields_list.append(eval_field)
+        evaluation_data = {'evaluator': eval.evaluator, 'eval_fields_list': eval_fields_list}
+
+    # track = Track.objects.get(pk=track_id)
+    # for evaluable_field in track.evaluatable_fields():
+    #     for eval in evaluations:
+    #         eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
+    #         for eval_field in eval_fields.all():
+    #             if eval_field.form_field_entry.field_id == evaluable_field.id:
+    #                 print str(eval_field.score) + " , " + str(eval_field.comment)
+
+    # for e in evaluations:
+    #     print "Evaluator = " + str (e.evaluator)
+    #     print "user = " + str(e.application.user)
+    #     print "Evaluator id = " +  str( e.evaluator_id )
+    #     evaluation_fields = e.evaluationfield_set # EvaluationField.objects.filter()
+    #     for eval_field in evaluation_fields.all():
+    #         print eval_field.comment + " , " + str(eval_field.score)
+    #     print "----------"
+    #
+    # context = {'application': application, 'evaluations': evaluations, 'evaluable_fields': track.evaluatable_fields()}
+
+    context = {'application': application, 'evaluation_data': evaluation_data}
     return render(request, 'snapp/evaluations.html', context)
 
 
