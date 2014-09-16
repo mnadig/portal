@@ -1,44 +1,47 @@
 {% extends "snapp/base.html" %}
 {% block content %}
 
-    Application ID : {{ application.id }}
-    Application User Email : {{ application.user.email }}
-    Application User Name : {{ application.user.username }}
-    {#    <h3>Evaluation Dashboard, Track: <i>{{ track.name }}</i></h3>#}
+
+    <div class="spacer"/>
+
+    <pre>Evaluations for Application: {{ application.id }} filed by {{ application.user.username }} ({{ application.user.email }}) </pre>
 
     <div class="panel-warning">
 
         <div id="collapseTrack{{ track.id }}">
             <div>
-
-                <table class="table table-hover table-striped">
-                    <thead>
-                    <tr>
-
-                        <th>Evaluator Name</th>
-                        <th>Evaluator Email</th>
-
-                        {% for field in track.evaluatable_fields %}
-                            <th>{{ field.evaluator_help_text }}</th>
-                            <th>Comment</th>
-                        {% endfor %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for eval_data in evaluation_data %}
+                {% if evaluation_data %}
+                    <table class="table table-hover table-striped">
+                        <thead>
                         <tr>
 
-                            <td>{{ evaluation_data.evaluator.username }}</td>
-                            <td>{{ evaluation_data.evaluator.email }}</td>
-{#                            <h1>{{ eval_data.eval_fields_list }}</h1>#}
-                            {% for eval_field in eval_data.eval_fields_list %}
-                                <td>{{ eval_field.score }}</td>
-                                <td>{{ eval_field.comment }}</td>
+                            <th>Evaluator Name</th>
+                            <th>Evaluator Email</th>
+
+                            {% for field in track.evaluatable_fields %}
+                                <th>{{ field.evaluator_help_text }}</th>
+                                <th>Comment</th>
                             {% endfor %}
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for eval_data in evaluation_data %}
+                            <tr>
+
+                                <td>{{ eval_data.evaluator.username }}</td>
+                                <td>{{ eval_data.evaluator.email }}</td>
+                                {#                            <h1>{{ eval_data.eval_fields_list }}</h1>#}
+                                {% for eval_field in eval_data.eval_fields_list %}
+                                    <td>{{ eval_field.score }}</td>
+                                    <td>{{ eval_field.comment }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <strong>There are no evaluations for this application.</strong>
+                {% endif %}
             </div>
         </div>
     </div>

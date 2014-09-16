@@ -70,15 +70,15 @@ def application(request, track_id):
 def view_evaluations(request, app_id):
     evaluations = Evaluation.objects.filter(application_id=app_id)
 
-    application = Application.objects.filter(id=app_id)
-    track_id = application[0].track_id
+    application = Application.objects.get(pk=app_id)
+    track_id = application.track_id
 
     track = Track.objects.get(pk=track_id)
     evaluation_data = []
-    for evaluable_field in track.evaluatable_fields():
+    for eval in evaluations:
+        eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
         eval_fields_list = []
-        for eval in evaluations:
-            eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
+        for evaluable_field in track.evaluatable_fields():
             for eval_field in eval_fields.all():
                 if eval_field.form_field_entry.field_id == evaluable_field.id:
                     eval_fields_list.append(eval_field)
