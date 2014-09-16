@@ -12,10 +12,10 @@ class Track(models.Model):
     def evaluatable_fields(self):
         result = []
         for field in self.form.fields.all():
-            if field.evaluator_help_text is not None:
+            if field.evaluator_help_text:
                 result.append(field)
         for field in self.form_phase2.fields.all():
-            if field.evaluator_help_text is not None:
+            if field.evaluator_help_text:
                 result.append(field)
         return result
 
@@ -87,6 +87,9 @@ class Application(models.Model):
 class Evaluation(models.Model):
     evaluator = models.ForeignKey(User, db_column='evaluator_id')
     application = models.ForeignKey(Application)
+
+    class Meta:
+        unique_together = ('evaluator', 'application')
 
 
 class EvaluationField(models.Model):

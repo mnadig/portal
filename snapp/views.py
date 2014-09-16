@@ -190,28 +190,39 @@ def admin_evaluation_dashboard(request, track_id):
     for app in applications:
         evaluations = Evaluation.objects.filter(application=app)
         field_scores = []
+        app_scores = []
+        app_score = None
         for evaluable_field in track.evaluatable_fields():
             res = {'evaluable_field': evaluable_field,
                    # 'scores': ()
             }
+            scores = []
             for eval in evaluations:
-                scores = []
+                # scores = []
                 eval_fields = eval.evaluationfield_set #EvaluationField.objects.filter()
                 for eval_field in eval_fields.all():
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
                         scores.append(eval_field.score)
-            res['avg_score'] = numpy.mean(scores)
+            if len(scores) > 0:
+                avg_score_for_field = numpy.mean(scores)
+                res['avg_score'] = numpy.mean(avg_score_for_field)
+                app_scores.append(avg_score_for_field)
+            else:
+                res['avg_score'] = None
             field_scores.append(res)
+        if len(app_scores) > 0:
+            app_score = numpy.mean(app_scores)
+        else:
+            app_score = None
+
         application_scores.append({
             'application': app,
-            'field_scores': field_scores
+            'field_scores': field_scores,
+            'app_score': app_score,
+            'num_evals': len(evaluations)
         })
-        #  =
 
-
-
-    # track_entries.get(track_entries.keys()[0])[0].evaluation_set
-
+    sort_applications_by_score(application_scores)
     context = {'user': request.user, 'application_scores': application_scores, 'track': track}
     return render(request, 'snapp/admin_evaluation_dashboard.html', context)
 
@@ -253,12 +264,11 @@ def evaluations(request, application_id):
             eval_field_data[id]['score'] = input[k]
 
     for form_field_id in eval_field_data.keys():
-        _id = int(form_field_id)
-        form_field_entry = FieldEntry.objects.get(pk=_id)
+        _id = FieldEntry.objects.get(pk=int(form_field_id))
         comment = eval_field_data[form_field_id]['comment']
         if eval_field_data[form_field_id]['score']:
             score = int(eval_field_data[form_field_id]['score'])
-        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=int(form_field_id), comment=comment,
+        eval_field = EvaluationField(evaluation=evaluation, form_field_entry=_id, comment=comment,
                                      score=score)
         eval_field.save()
 
@@ -314,6 +324,17 @@ def evaluation_form(request, application_id):
 
     return render(request, 'snapp/evaluation_form.html', context)
 
+def sort_applications_by_score(application_list):
+
+    length = len(application_list) - 1
+    sorted = False
+
+    while not sorted:
+        sorted = True
+        for i in range(length):
+            if application_list[i]['app_score'] < application_list[i+1]['app_score']:
+                sorted = False
+                application_list[i], application_list[i+1] = application_list[i+1], application_list[i]
 
 def general_faq(request):
     context = {}
