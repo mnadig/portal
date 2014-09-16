@@ -45,10 +45,10 @@
 
                                     <td>{{ app_score.application.user.username }}</td>
                                     <td>{{ app_score.application.user.email }}</td>
-                                    {% if field_score.app_score == None %}
+                                    {% if app_score.app_score == None %}
                                         <td>N/A</td>
                                     {% else %}
-                                        <td>{{ field_score.app_score|floatformat }}</td>
+                                        <td>{{ app_score.app_score|floatformat:2}}</td>
                                     {% endif %}
                                     <td>{{ app_score.num_evals }}</td>
                                     {# Assumed that these are ordered as track.evaluatable_fields #}
@@ -57,7 +57,7 @@
                                         {% if field_score.avg_score == None %}
                                             <td>N/A</td>
                                         {% else %}
-                                            <td>{{ field_score.avg_score|floatformat }}</td>
+                                            <td>{{ field_score.avg_score|floatformat:2}}</td>
                                         {% endif %}
                                     {% endfor %}
                                     <td>
