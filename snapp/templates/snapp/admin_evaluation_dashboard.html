@@ -4,29 +4,17 @@
 {% block content %}
 
     {% if application_scores %}
-        <div class="panel-group22" id="accordionTrack1">
+        <div id="accordionTrack1">
             <div class="spacer"/>
-            <div class="panel222 panel-warning">
-                {#                    <div class="panel-heading222">#}
-                {#                        <h4 class="panel-title222">#}
-                {#                            <a data-toggle="collapse" data-parent="#accordionTrack{{ track.id }}"#}
-                {#                               href="#collapseTrack{{ track.id }}">#}
-                {#                                {{ track.name }}#}
-                {#                            </a>#}
-                {#                        </h4>#}
-                {#                    </div>#}
-                <h3>Evaluation Dashboard, Track: <i>{{ track.name }}</i></h3>
+            <div class="panel-warning">
+                <h3>Evaluation Dashboard</h3>
+                <h3><i>Track: {{ track.name }}</i></h3>
 
                 <div id="collapseTrack{{ track.id }}">
                     <div>
 
                         <table class="table table-hover table-striped">
                             <thead>
-{#                            <tr>#}
-{#                                <th colspan="4"/>#}
-{#                                <th colspan="{{ track.evaluatable_fields|length }}">Average Scores Per Question</th>#}
-{#                                <th colspan="1"/>#}
-{#                            </tr>#}
                             <tr>
 
                                 <th>Submitted By</th>
