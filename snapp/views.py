@@ -203,7 +203,7 @@ def admin_evaluation_dashboard(request, track_id):
             'num_evals': len(evaluations)
         })
 
-    sort_applications_by_score(application_scores)
+    application_scores = sorted(application_scores, key=get_key, reverse=True)
     context = {'user': request.user, 'application_scores': application_scores, 'track': track}
     return render(request, 'snapp/admin_evaluation_dashboard.html', context)
 
@@ -305,18 +305,8 @@ def evaluation_form(request, application_id):
 
     return render(request, 'snapp/evaluation_form.html', context)
 
-
-def sort_applications_by_score(application_list):
-    length = len(application_list) - 1
-    sorted = False
-
-    while not sorted:
-        sorted = True
-        for i in range(length):
-            if application_list[i]['app_score'] < application_list[i + 1]['app_score']:
-                sorted = False
-                application_list[i], application_list[i + 1] = application_list[i + 1], application_list[i]
-
+def get_key(app_data):
+    return app_data['app_score']
 
 def general_faq(request):
     context = {}
