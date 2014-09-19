@@ -184,6 +184,7 @@ def admin_evaluation_dashboard(request, track_id):
                 for eval_field in eval_fields.all():
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
                         scores.append(eval_field.score)
+                        break
             if len(scores) > 0:
                 avg_score_for_field = numpy.mean(scores)
                 res['avg_score'] = numpy.mean(avg_score_for_field)
