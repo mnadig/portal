@@ -68,7 +68,7 @@ def application(request, track_id):
 
 @login_required
 def view_evaluations(request, app_id):
-    evaluations = Evaluation.objects.filter(application_id=app_id)
+    evaluations = Evaluation.objects.filter(application_id=app_id).select_related()
 
     application = Application.objects.get(pk=app_id)
     track_id = application.track_id
@@ -82,6 +82,7 @@ def view_evaluations(request, app_id):
             for eval_field in eval_fields.all():
                 if eval_field.form_field_entry.field_id == evaluable_field.id:
                     eval_fields_list.append(eval_field)
+                    break
         evaluation_data.append({'evaluator': eval.evaluator, 'eval_fields_list': eval_fields_list})
 
     context = {'application': application, 'track': track, 'evaluation_data': evaluation_data}
@@ -181,7 +182,7 @@ def admin_evaluation_dashboard(request, track_id):
             for eval in evaluations:
                 # scores = []
                 eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
-                for eval_field in eval_fields.all():
+                for eval_field in eval_fields.all().select_related('form_field_entry'):
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
                         scores.append(eval_field.score)
                         break
@@ -215,7 +216,7 @@ def admin_application_dashboard(request):
     tracks = Track.objects.all()
 
     for track in tracks:
-        track_entries[track] = Application.objects.filter(track=track)
+        track_entries[track] = Application.objects.filter(track=track).select_related()
 
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/admin_application_dashboard.html', context)
