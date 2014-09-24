@@ -66,10 +66,11 @@ class Application(models.Model):
     def phase1_entry(self):
         from forms_builder.forms.models import FormEntry
 
-        entries = FormEntry.objects.filter(track=self.track, user=self.user)
-        if entries.count() > 0:
-            return entries[0]
-        return None
+        entry = FormEntry.objects.filter(track=self.track, user=self.user)[0]
+        return entry
+        # if entries.count() > 0:
+        #     return entries[0]
+        # return None
 
     def phase2_entry(self):
         from forms_builder.forms.models import FormEntry
