@@ -68,7 +68,7 @@ def application(request, track_id):
 
 @login_required
 def view_evaluations(request, app_id):
-    evaluations = Evaluation.objects.filter(application_id=app_id)
+    evaluations = Evaluation.objects.filter(application_id=app_id).select_related()
 
     application = Application.objects.get(pk=app_id)
     track_id = application.track_id
@@ -82,6 +82,7 @@ def view_evaluations(request, app_id):
             for eval_field in eval_fields.all():
                 if eval_field.form_field_entry.field_id == evaluable_field.id:
                     eval_fields_list.append(eval_field)
+                    break
         evaluation_data.append({'evaluator': eval.evaluator, 'eval_fields_list': eval_fields_list})
 
     context = {'application': application, 'track': track, 'evaluation_data': evaluation_data}
@@ -181,9 +182,10 @@ def admin_evaluation_dashboard(request, track_id):
             for eval in evaluations:
                 # scores = []
                 eval_fields = eval.evaluationfield_set  # EvaluationField.objects.filter()
-                for eval_field in eval_fields.all():
+                for eval_field in eval_fields.all().select_related('form_field_entry'):
                     if eval_field.form_field_entry.field_id == evaluable_field.id:
                         scores.append(eval_field.score)
+                        break
             if len(scores) > 0:
                 avg_score_for_field = numpy.mean(scores)
                 res['avg_score'] = numpy.mean(avg_score_for_field)
@@ -203,7 +205,7 @@ def admin_evaluation_dashboard(request, track_id):
             'num_evals': len(evaluations)
         })
 
-    sort_applications_by_score(application_scores)
+    application_scores = sorted(application_scores, key=get_key, reverse=True)
     context = {'user': request.user, 'application_scores': application_scores, 'track': track}
     return render(request, 'snapp/admin_evaluation_dashboard.html', context)
 
@@ -214,7 +216,7 @@ def admin_application_dashboard(request):
     tracks = Track.objects.all()
 
     for track in tracks:
-        track_entries[track] = Application.objects.filter(track=track)
+        track_entries[track] = Application.objects.filter(track=track).select_related()
 
     context = {'user': request.user, 'track_entries': track_entries}
     return render(request, 'snapp/admin_application_dashboard.html', context)
@@ -305,18 +307,8 @@ def evaluation_form(request, application_id):
 
     return render(request, 'snapp/evaluation_form.html', context)
 
-
-def sort_applications_by_score(application_list):
-    length = len(application_list) - 1
-    sorted = False
-
-    while not sorted:
-        sorted = True
-        for i in range(length):
-            if application_list[i]['app_score'] < application_list[i + 1]['app_score']:
-                sorted = False
-                application_list[i], application_list[i + 1] = application_list[i + 1], application_list[i]
-
+def get_key(app_data):
+    return app_data['app_score']
 
 def general_faq(request):
     context = {}

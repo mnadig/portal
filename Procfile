@@ -1,1 +1,1 @@
-web: gunicorn rootcause.wsgi
+web: gunicorn rootcause.wsgi --workers $WEB_CONCURRENCY
